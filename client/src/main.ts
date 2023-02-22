@@ -4,6 +4,7 @@ import './style.css'
 import App from './App.vue'
 import Home from './views/Home.vue'
 import Login from './views/Login.vue'
+import Create from './views/Create.vue'
 
 // create router
 const router = createRouter({
@@ -11,6 +12,7 @@ const router = createRouter({
     routes: [
         { path: '/', component: Home },
         { path: '/login', component: Login },
+        { path: '/create', component: Create },
     ],
 })
 
