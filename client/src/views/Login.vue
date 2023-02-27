@@ -1,5 +1,40 @@
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
+import axios from "axios";
+import { AxiosResponse, AxiosError } from "axios";
+import { ref } from "vue";
+
+const username = ref();
+const password = ref();
+
+const errorMessage = ref();
+
+// do POST to http://localhost:3000/api/users/login
+// with in the body the username and password
+
+async function login() {
+  try {
+    const response = await axios.post("http://localhost:3000/api/users/login", {
+      username: username.value,
+      password: password.value,
+    });
+
+    // check if response is 200
+    if (response.status === 200) {
+      // store the token in the local storage
+      localStorage.setItem("token", response.data.token);
+      // redirect to the home page
+      window.location.href = "/";
+    }
+  } catch (error: any) {
+    // check if error is 401
+    if (error.response.status === 401) {
+      errorMessage.value = "Verkeerde gebruikersnaam of wachtwoord";
+    } else {
+      errorMessage.value = "Er is iets misgegaan, probeer het later opnieuw";
+    }
+  }
+}
 </script>
 
 <template>
@@ -18,59 +53,45 @@ import Navbar from "../components/Navbar.vue";
               <form action="#" class="signin-form">
                 <div class="form-group mt-3">
                   <label class="form-control-placeholder" for="username"
-                    >Username</label
+                    >Gebruikersnaam</label
                   >
-                  <input type="text" class="form-control" />
-                  <div
-                    data-lastpass-icon-root="true"
-                    style="
-                      position: relative !important;
-                      height: 0px !important;
-                      width: 0px !important;
-                      float: left !important;
-                    "
-                  ></div>
+                  <input type="text" class="form-control" v-model="username" />
                 </div>
                 <div class="form-group">
                   <label class="form-control-placeholder" for="password"
-                    >Password</label
+                    >Wachtwoord</label
                   >
                   <input
                     id="password-field"
                     type="password"
                     class="form-control"
+                    v-model="password"
                   />
                   <span
                     toggle="#password-field"
                     class="fa fa-fw fa-eye field-icon toggle-password"
                   ></span>
-                  <div
-                    data-lastpass-icon-root="true"
-                    style="
-                      position: relative !important;
-                      height: 0px !important;
-                      width: 0px !important;
-                      float: left !important;
-                    "
-                  ></div>
                 </div>
                 <div class="form-group">
                   <button
-                    type="submit"
+                    @click="login"
+                    type="button"
                     class="form-control btn btn-primary rounded submit px-3"
                   >
-                    Sign In
+                    Login
                   </button>
                 </div>
                 <div class="form-group d-md-flex">
-                  <div class="w-50 text-md-right">
+                  <!-- <div class="w-50 text-md-right">
                     <a href="#">Forgot Password</a>
-                  </div>
+                  </div> -->
                 </div>
               </form>
               <p class="text-center">
-                Not a member? <a data-toggle="tab" href="#signup">Sign Up</a>
+                Nog geen account?
+                <a data-toggle="tab" href="/signup">Registreer</a>
               </p>
+              <p>{{ errorMessage }}</p>
             </div>
           </div>
         </div>
@@ -78,8 +99,6 @@ import Navbar from "../components/Navbar.vue";
     </div>
   </div>
 </template>
-
-
 
 <style scoped>
 </style>

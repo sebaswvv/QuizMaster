@@ -25,6 +25,13 @@
         placeholder="Vraag"
       />
       <!-- antwoorden -->
+      <input type="text" class="form-control" id="question" placeholder="A" />
+
+      <input type="text" class="form-control" id="question" placeholder="B" />
+
+      <input type="text" class="form-control" id="question" placeholder="C" />
+
+      <input type="text" class="form-control" id="question" placeholder="D" />
     </div>
 
     <!-- button to add new question -->
@@ -37,6 +44,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Navbar from "../components/Navbar.vue";
+
+const questions = ref([
+  {
+    question: "vraag",
+    answers: ["antwoord1", "antwoord2", "antwoord3", "antwoord4"],
+    rightAnswer: 0,
+  },
+]);
 
 function addQuestion() {
   console.log("add question");

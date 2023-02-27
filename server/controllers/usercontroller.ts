@@ -8,9 +8,10 @@ exports.login = async (req: Request, res: Response) => {
     const { username, password } = req.body;
 
     // check if the username and password are set
-    if (!(username && password)) {
-        res.status(400).send("Username and password are required");
-    }
+    // if (!(username && password)) {
+    //     res.status(400).send("Username and password are required");
+    //     return;
+    // }
 
     // get user from database
     const userService = new UserService();
@@ -18,14 +19,14 @@ exports.login = async (req: Request, res: Response) => {
 
     // check if user exists
     if (user.length === 0) {
-        res.status(400).send("User not found");
+        res.status(401).send("Invalid username or password");
         return;
     }
 
     // check if encrypted password match
     const validPassword = await bcrypt.compare(password, user[0].password);
     if (!validPassword) {
-        res.status(401).send("Invalid password");
+        res.status(401).send("Invalid username or password");
         return;
     }
 
