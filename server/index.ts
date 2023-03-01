@@ -25,12 +25,3 @@ app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
     //console.log(encryptPassword("admin"));
 });
-
-// const bcrypt = require('bcrypt');
-// const salt = process.env.SALT;
-
-// function encryptPassword(password: string) {
-//     const hash = bcrypt.hashSync(password, salt);
-
-//     return hash;
-// }

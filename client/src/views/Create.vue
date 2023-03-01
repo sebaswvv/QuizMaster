@@ -2,22 +2,43 @@
 import { ref } from "vue";
 import Navbar from "../components/Navbar.vue";
 import { useLoginStore } from "../stores/useLogin";
+import { useQuizStore } from "../stores/useQuiz";
 import NewQuestionBox from "../components/NewQuestionBox.vue";
 
 const loginStore = useLoginStore();
+const quizStore = useQuizStore();
 
-// const questions = ref([null]);
-// empty array of questions
-const questions: any = ref([]);
+// set the questions to the questions in the quizStore
+const questions: any = ref(quizStore.quiz.questions);
 
-const quizName = ref("");
+function publishQuiz() {
+  // publish quiz to database
+  quizStore.publishQuiz();
+}
 
 function addQuestion() {
   // add new empty question to questions
-  questions.value.push({
-    question: "",
-    answers: ["", "", "", ""],
-    rightAnswer: 0,
+  const newQuestion = questions.value.push({
+    text: "",
+    image: "",
+    timeToAnswer: 0,
+    options: [{
+      text: "",
+      isCorrect: false,
+    },
+    {
+      text: "",
+      isCorrect: false,
+    },
+    {
+      text: "",
+      isCorrect: false,
+    },
+    {
+      text: "",
+      isCorrect: false,
+    },
+    ],
   });
 }
 </script>
@@ -31,11 +52,11 @@ function addQuestion() {
       <router-link to="/login">inloggen</router-link>
     </p>
 
-    <!-- v-if="loginStore.isLoggedIn" -->
-    <div class="create-quiz">
+    <div v-if="loginStore.isLoggedIn" class="create-quiz">
       <h3>Hoe wil je je quiz noemen?</h3>
       <div class="mb-3 form-group">
-        <input type="text" class="form-control" id="quizName" placeholder="b.v.b 'F1 quiz''" v-model="quizName" />
+        <input type="text" class="form-control" id="quizName" placeholder="b.v.b 'F1 quiz''"
+          v-model="quizStore.quiz.name" />
       </div>
     </div>
 
@@ -45,10 +66,13 @@ function addQuestion() {
     </div>
 
     <!-- button to add new question -->
-    <button v-if="quizName != ''" class="btn btn-primary" @click="addQuestion">
+    <button v-if="quizStore.quiz.name != ''" class="btn btn-primary" @click="addQuestion">
       Voeg een vraag toe
     </button>
   </div>
+  <button v-if="quizStore.quiz.name != ''" class="btn btn-primary" @click="publishQuiz">
+    Maak Quiz
+  </button>
 </template>
   
 

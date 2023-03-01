@@ -11,9 +11,9 @@ class QuizService {
 
     async addQuiz(rawQuiz: any) {
         // check if all required fields are present
-        if (!rawQuiz.name || !rawQuiz.userId || !rawQuiz.isPublic || !rawQuiz.questions) {
-            return false;
-        }
+        // if (!rawQuiz.name || !rawQuiz.userId || !rawQuiz.isPublic || !rawQuiz.questions) {
+        //     return false;
+        // }
 
         const quiz = new Quiz(
             rawQuiz.name,
@@ -41,7 +41,7 @@ class QuizService {
             }
             const quiz = await this.quizRepository.getQuiz(id);
             return quiz;
-        } catch (error) {
+        } catch (error) {            
             return false;
         }
     }

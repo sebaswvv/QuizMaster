@@ -61,17 +61,30 @@ class QuizRepository extends Repository {
         try {
             // get quiz
             const quiz = await this.knex('quizzes').where('id', id).first();
-    
+            
+            // parse quiz.public to boolean
+            const isPublic = !!quiz.public.readInt8(0);
+            quiz.public = isPublic;
+
             // get questions
             const questions = await this.knex('questions').where('quiz_id', id);
-    
+
+            // for each question parse the image to string
+            for (const question of questions) {
+                if (question.image) {
+                    // to base64
+                    question.image = question.image.toString('base64');
+                }
+            }
+            
             // foreach question get options
             for (const question of questions) {
                 const options = await this.knex('options').where('question_id', question.id);
                  
                 for (const option of options) {
-                    // set Buffer to boolean using Buffer api
-                    console.log(option.is_correct);                 
+                    // parse Buffer to boolean
+                    const isCorrect = !!option.is_correct.readInt8(0);
+                    option.is_correct = isCorrect;
                 }
                 question.options = options;
             }

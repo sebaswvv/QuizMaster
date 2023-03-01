@@ -22,7 +22,7 @@ async function login() {
     // check if response is 200
     if (response.status === 200) {
       // store login in the store
-      loginStore.login(username.value, response.data.token);
+      loginStore.login(username.value, response.data.token, response.data.userId);
       router.push("/");
     }
   } catch (error: any) {
@@ -66,13 +66,15 @@ async function login() {
                 </div>
                 <div class="form-group d-md-flex">
                   <!-- <div class="w-50 text-md-right">
-                        <a href="#">Forgot Password</a>
-                      </div> -->
+                                                                  <a href="#">Forgot Password</a>
+                                                                </div> -->
                 </div>
               </form>
               <p class="text-center">
                 Nog geen account?
-                <a data-toggle="tab" href="/signup">Registreer</a>
+                <router-link to="/register">
+                  Registreer
+                </router-link>
               </p>
               <p>{{ errorMessage }}</p>
             </div>

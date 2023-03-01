@@ -6,6 +6,10 @@ router
     .route('/login')
     .post(UserController.login);
 
+router
+    .route('/register')
+    .post(UserController.register);
+
 
 
 module.exports = router;

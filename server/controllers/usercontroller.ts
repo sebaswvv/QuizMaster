@@ -3,6 +3,20 @@ const bcrypt = require('bcrypt');
 import { UserService } from "../services/userservice";
 import { Request, Response } from "express";
 
+exports.register = async (req: Request, res: Response) => {
+    // read username and password from request body
+    const { username, password, email } = req.body;
+    const userService = new UserService();
+    // TODO check if username already exists 
+    const user = await userService.registerUser(username, password, email);  
+    res.status(201).send({
+        message: "User created",
+        username: username,
+        email: email,
+        userId: user[0]
+    });
+}
+
 exports.login = async (req: Request, res: Response) => {
     // read username and password from request body
     const { username, password } = req.body;
@@ -34,8 +48,10 @@ exports.login = async (req: Request, res: Response) => {
     const key = process.env.JWT_KEY;
     const token = jwt.sign({ username: user[0].username }, key, { expiresIn: "1h", issuer: "http://localhost:3000", audience: "http://localhost:3000", algorithm: "HS256" });
 
+    // TODO: send user id as well
     res.send({
         message: "Login successful",
+        userId: user[0].id,
         token: token
     })
 }
