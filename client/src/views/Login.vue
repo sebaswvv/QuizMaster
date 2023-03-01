@@ -12,9 +12,6 @@ const password = ref();
 
 const errorMessage = ref();
 
-// do POST to http://localhost:3000/api/users/login
-// with in the body the username and password
-
 async function login() {
   try {
     const response = await axios.post("http://localhost:3000/api/users/login", {
@@ -54,39 +51,23 @@ async function login() {
               </div>
               <form action="#" class="signin-form">
                 <div class="form-group mt-3">
-                  <label class="form-control-placeholder" for="username"
-                    >Gebruikersnaam</label
-                  >
+                  <label class="form-control-placeholder" for="username">Gebruikersnaam</label>
                   <input type="text" class="form-control" v-model="username" />
                 </div>
                 <div class="form-group">
-                  <label class="form-control-placeholder" for="password"
-                    >Wachtwoord</label
-                  >
-                  <input
-                    id="password-field"
-                    type="password"
-                    class="form-control"
-                    v-model="password"
-                  />
-                  <span
-                    toggle="#password-field"
-                    class="fa fa-fw fa-eye field-icon toggle-password"
-                  ></span>
+                  <label class="form-control-placeholder" for="password">Wachtwoord</label>
+                  <input id="password-field" type="password" class="form-control" v-model="password" />
+                  <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                 </div>
                 <div class="form-group">
-                  <button
-                    @click="login"
-                    type="button"
-                    class="form-control btn btn-primary rounded submit px-3"
-                  >
+                  <button @click="login" type="button" class="form-control btn btn-primary rounded submit px-3">
                     Login
                   </button>
                 </div>
                 <div class="form-group d-md-flex">
                   <!-- <div class="w-50 text-md-right">
-                    <a href="#">Forgot Password</a>
-                  </div> -->
+                        <a href="#">Forgot Password</a>
+                      </div> -->
                 </div>
               </form>
               <p class="text-center">
@@ -102,5 +83,4 @@ async function login() {
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

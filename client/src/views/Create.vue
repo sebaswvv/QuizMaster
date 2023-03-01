@@ -2,19 +2,23 @@
 import { ref } from "vue";
 import Navbar from "../components/Navbar.vue";
 import { useLoginStore } from "../stores/useLogin";
+import NewQuestionBox from "../components/NewQuestionBox.vue";
 
 const loginStore = useLoginStore();
 
-// const questions = ref([
-//   {
-//     question: "vraag",
-//     answers: ["antwoord1", "antwoord2", "antwoord3", "antwoord4"],
-//     rightAnswer: 0,
-//   },
-// ]);
+// const questions = ref([null]);
+// empty array of questions
+const questions: any = ref([]);
+
+const quizName = ref("");
 
 function addQuestion() {
-  console.log("add question");
+  // add new empty question to questions
+  questions.value.push({
+    question: "",
+    answers: ["", "", "", ""],
+    rightAnswer: 0,
+  });
 }
 </script>
 
@@ -26,40 +30,24 @@ function addQuestion() {
       Om je quiz op te maken moet je eerst
       <router-link to="/login">inloggen</router-link>
     </p>
-    <div v-if="loginStore.isLoggedIn" class="create-quiz">
+
+    <!-- v-if="loginStore.isLoggedIn" -->
+    <div class="create-quiz">
+      <h3>Hoe wil je je quiz noemen?</h3>
       <div class="mb-3 form-group">
-        <input
-          type="text"
-          class="form-control"
-          id="quizName"
-          placeholder="Hoe wil je je quiz noemen?"
-        />
+        <input type="text" class="form-control" id="quizName" placeholder="b.v.b 'F1 quiz''" v-model="quizName" />
       </div>
-
-      <!-- create question -->
-      <div class="question-box mb-3 form-group">
-        <!-- vraag:  -->
-        <input
-          type="text"
-          class="form-control"
-          id="question"
-          placeholder="Vraag"
-        />
-        <!-- antwoorden -->
-        <input type="text" class="form-control" id="question" placeholder="A" />
-
-        <input type="text" class="form-control" id="question" placeholder="B" />
-
-        <input type="text" class="form-control" id="question" placeholder="C" />
-
-        <input type="text" class="form-control" id="question" placeholder="D" />
-      </div>
-
-      <!-- button to add new question -->
-      <button class="btn btn-primary" @click="addQuestion">
-        Voeg een vraag toe
-      </button>
     </div>
+
+    <!-- foreach question a new question box execpt the first one -->
+    <div v-for="(question, index) in questions" :key="index">
+      <NewQuestionBox :question="question" />
+    </div>
+
+    <!-- button to add new question -->
+    <button v-if="quizName != ''" class="btn btn-primary" @click="addQuestion">
+      Voeg een vraag toe
+    </button>
   </div>
 </template>
   

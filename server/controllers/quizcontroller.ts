@@ -1,34 +1,28 @@
 import { QuizService } from "../services/quizservice";
 import { Request, Response } from "express";
-import { Quiz } from "../models/quiz";
-import { Question } from "../models/question";
-import { Option } from "../models/option";
 
 exports.addQuiz = async (req: Request, res: Response) => {
     const quizService = new QuizService();
 
-    // create a template quiz
-    const quiz = new Quiz(0, "Quiz 1", 1, true, [
-        new Question("Question 1", "", 10, [
-            new Option("Option 1", true),
-            new Option("Option 2", false),
-            new Option("Option 3", false),
-            new Option("Option 4", false)
-        ]),
-        new Question("Question 2", "", 10, [
-            new Option("Option 1", true),
-            new Option("Option 2", false),
-            new Option("Option 3", false),
-            new Option("Option 4", false)
-        ]),
-        new Question("Question 3", "", 10, [
-            new Option("Option 1", true),
-            new Option("Option 2", false),
-            new Option("Option 3", false),
-            new Option("Option 4", false)
-        ]),
-    ]); 
+    const quiz = await quizService.addQuiz(req.body);
+    if (!quiz) {
+        res.status(400).json({ message: 'Error adding quiz' });
+        return;
+    }
+    // send the req.body back
+    res.status(200).json(quiz);
+}
 
-    // send this quiz as json to the users
+exports.getQuiz = async (req: Request, res: Response) => {
+    const quizService = new QuizService();
+
+    //console.log(req.query.id);
+
+    const quiz = await quizService.getQuiz(req.query.id);
+    if (!quiz) {
+        res.status(400).json({ message: 'Error getting quiz' });
+        return;
+    }
+    //send the req.body back
     res.status(200).json(quiz);
 }
