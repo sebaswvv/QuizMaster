@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
 import axios from "axios";
-import { AxiosResponse, AxiosError } from "axios";
 import { ref } from "vue";
+import { useLoginStore } from "../stores/useLogin";
+
+const loginStore = useLoginStore();
 
 const username = ref();
 const password = ref();
@@ -21,10 +23,11 @@ async function login() {
 
     // check if response is 200
     if (response.status === 200) {
-      // store the token in the local storage
-      localStorage.setItem("token", response.data.token);
+      // store login in the store
+      loginStore.login(username.value, response.data.token);
+      console.log(loginStore.username);
       // redirect to the home page
-      window.location.href = "/";
+      // window.location.href = "/";
     }
   } catch (error: any) {
     // check if error is 401

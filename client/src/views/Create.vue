@@ -1,3 +1,20 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import Navbar from "../components/Navbar.vue";
+
+const questions = ref([
+  {
+    question: "vraag",
+    answers: ["antwoord1", "antwoord2", "antwoord3", "antwoord4"],
+    rightAnswer: 0,
+  },
+]);
+
+function addQuestion() {
+  console.log("add question");
+}
+</script>
+
 <template>
   <div class="container">
     <Navbar />
@@ -41,22 +58,7 @@
   </div>
 </template>
   
-<script setup lang="ts">
-import { ref } from "vue";
-import Navbar from "../components/Navbar.vue";
 
-const questions = ref([
-  {
-    question: "vraag",
-    answers: ["antwoord1", "antwoord2", "antwoord3", "antwoord4"],
-    rightAnswer: 0,
-  },
-]);
-
-function addQuestion() {
-  console.log("add question");
-}
-</script>
   
 <style scoped>
 .question-box {
