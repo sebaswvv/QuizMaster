@@ -18,6 +18,11 @@ export const useLoginStore = defineStore({
             this.username = username
             this.token = token
         },
+        logout() {
+            this.loggedIn = false
+            this.username = ''
+            this.token = ''
+        },
     },
 })
 
