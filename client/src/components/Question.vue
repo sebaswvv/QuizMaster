@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+//import TimerSlider from '../components/TimerSlider.vue';
 const { question, round } = defineProps(['question', 'round']);
 
 // const timeToAnswer = question.time_to_answer;
@@ -33,6 +34,7 @@ onMounted(() => {
 </script>
 
 <template>
+    <!-- <TimerSlider :timeInSeconds="timeToAnswerInSeconds" /> -->
     <div class="center">
         <h2>Vraag {{ round + 1 }}</h2>
         <h1>{{ question.text }}</h1>

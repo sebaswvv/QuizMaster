@@ -15,7 +15,6 @@
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
 import Question from "../components/Question.vue";
-import TimerSlider from '../components/TimerSlider.vue';
 import { ref, onMounted } from 'vue';
 import axios from "axios";
 
