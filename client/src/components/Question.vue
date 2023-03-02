@@ -27,7 +27,6 @@ onMounted(() => {
         });
         // show a button to go to the next question
     }, timeToAnswerInSeconds * 1000);
-
 });
 
 
