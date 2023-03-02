@@ -5,7 +5,7 @@ import Hero from "../components/Hero.vue";
 
 
 <template>
-  <div class="container-fluid">
+  <div class="container">
     <Navbar />
   </div>
   <Hero />

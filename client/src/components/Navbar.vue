@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { useLoginStore } from "../stores/useLogin";
+import { useQuizStore } from "../stores/useQuiz";
 
 const loginStore = useLoginStore();
+const quizStore = useQuizStore();
 
 function handleLogout() {
+  // wipe states
   loginStore.logout();
+  quizStore.resetQuiz();
 }
 </script>
 

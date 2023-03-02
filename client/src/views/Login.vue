@@ -3,9 +3,11 @@ import Navbar from "../components/Navbar.vue";
 import axios from "axios";
 import { ref } from "vue";
 import { useLoginStore } from "../stores/useLogin";
+import { useQuizStore } from "../stores/useQuiz";
 import router from "../router";
 
 const loginStore = useLoginStore();
+const quizStore = useQuizStore();
 
 const username = ref();
 const password = ref();
@@ -23,6 +25,7 @@ async function login() {
     if (response.status === 200) {
       // store login in the store
       loginStore.login(username.value, response.data.token, response.data.userId);
+      quizStore.setUserId();
       router.push("/");
     }
   } catch (error: any) {
@@ -66,8 +69,8 @@ async function login() {
                 </div>
                 <div class="form-group d-md-flex">
                   <!-- <div class="w-50 text-md-right">
-                                                                  <a href="#">Forgot Password</a>
-                                                                </div> -->
+                                                                      <a href="#">Forgot Password</a>
+                                                                    </div> -->
                 </div>
               </form>
               <p class="text-center">

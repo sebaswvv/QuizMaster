@@ -14,7 +14,6 @@ exports.addQuiz = async (req: Request, res: Response) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_KEY);
         // TODO check if the token is not expired      
-        console.log(decoded);
     } catch (error) {
         res.status(401).json({ message: 'Invalid token' });
         return;

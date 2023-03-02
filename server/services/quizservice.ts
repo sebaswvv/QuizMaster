@@ -13,7 +13,7 @@ class QuizService {
         // check if all required fields are present
         if (!rawQuiz.name || !rawQuiz.userId || rawQuiz.isPublic === undefined || !rawQuiz.questions) {
             return false;
-        }        
+        }      
 
         const quiz = new Quiz(
             rawQuiz.name,
@@ -21,7 +21,7 @@ class QuizService {
             rawQuiz.isPublic,
             rawQuiz.questions,   
             undefined
-        );
+        );        
 
         // check if every question has text, image, time to answer and options
         for (let i = 0; i < quiz.questions.length; i++) {

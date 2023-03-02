@@ -17,7 +17,7 @@ export const useQuizStore = defineStore({
           id: 0,
           name: '',
           isPublic: false,
-          userId: useLoginStore().getId,
+          userId: 0,
           questions: [],
         },
       }),
@@ -25,12 +25,36 @@ export const useQuizStore = defineStore({
         getQuiz: (state) => state.quiz,
     },
     actions: {
+        setUserId() {
+            this.quiz.userId = useLoginStore().getId;
+        },
         async publishQuiz() {
             // publish the quiz
             const quizAsJson = JSON.parse(JSON.stringify(this.quiz));
 
-            const response = await axios.post('http://localhost:3000/api/quizzes', quizAsJson);
+            // get Bearer token from login store and add it to the header
+            const token = useLoginStore().getToken;
+            const config = {
+                headers: { Authorization: `Bearer ${token}` }
+            };
+
+            // send the quiz to the backend
+            const response = await axios.post(
+                'http://localhost:3000/api/quizzes',
+                quizAsJson,
+                config
+            )
             console.log(response);
+        },
+
+        resetQuiz() {
+            this.quiz = {
+                id: 0,
+                name: '',
+                isPublic: false,
+                userId: 0,
+                questions: [],
+            }
         }
     }    
 })
