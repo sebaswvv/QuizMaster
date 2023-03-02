@@ -5,28 +5,34 @@ const { question } = defineProps(["question"]);
 <template>
   <!-- create question -->
   <div class="question-box mb-3 form-group">
+    <button class="remove-button mb-1" @click="$emit('remove-question', question)">&#10005;</button>
     <!-- question name:  -->
-
-
     <!-- answers -->
     <div class="row">
       <div class="col-md-8">
-        <input type="text" class="form-control mb-3" id="question" placeholder="Wat is de vraag?"
-          v-model="question.text" />
-        <input type="text" class="form-control" id="question" placeholder="A" v-model="question.options[0].text" />
-        Juist? <input type="checkbox" v-model="question.options[0].isCorrect" :value="true">
-
-        <input type="text" class="form-control" id="question" placeholder="B" v-model="question.options[1].text" />
-        Juist? <input type="checkbox" v-model="question.options[1].isCorrect" :value="true">
-
-        <input type="text" class="form-control" id="question" placeholder="C" v-model="question.options[2].text" />
-        Juist? <input type="checkbox" v-model="question.options[2].isCorrect" :value="true">
-
-        <input type="text" class="form-control" id="question" placeholder="D" v-model="question.options[3].text" />
-        Juist? <input type="checkbox" v-model="question.options[3].isCorrect" :value="true">
+        <div class="answer-container">
+          <input type="text" class="form-control mb-2" id="question" placeholder="Wat is de vraag?"
+            v-model="question.text" />
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" v-model="question.options[0].isCorrect" :value="true">
+            <input type="text" class="form-control" id="question" placeholder="A" v-model="question.options[0].text" />
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" v-model="question.options[1].isCorrect" :value="true">
+            <input type="text" class="form-control" id="question" placeholder="B" v-model="question.options[1].text" />
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" v-model="question.options[2].isCorrect" :value="true">
+            <input type="text" class="form-control" id="question" placeholder="C" v-model="question.options[2].text" />
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" v-model="question.options[3].isCorrect" :value="true">
+            <input type="text" class="form-control" id="question" placeholder="D" v-model="question.options[3].text" />
+          </div>
+        </div>
       </div>
       <div class="col-md-4">
-        <input type="number" class="form-control mb-3" v-model="question.timeToAnswer"
+        <input type="text" class="form-control mb-3" v-model="question.timeToAnswer"
           placeholder="Seconden om te antwoorden">
         <!-- plus button to add an image -->
         <div class="input-group mb-3">
@@ -44,6 +50,19 @@ const { question } = defineProps(["question"]);
 </template>
 
 <style scoped>
+.remove-button {
+  background-color: #0D5D56;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  float: right;
+}
+
 .question-box {
   /* rounded border */
   /* border: 1px solid #0D5D56; */
@@ -51,5 +70,19 @@ const { question } = defineProps(["question"]);
   padding: 20px;
   /* back shadow */
   box-shadow: 1px 2px 5px #555454;
+}
+
+.answer-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+}
+
+.form-check-input {
+  margin-right: 10px;
 }
 </style>

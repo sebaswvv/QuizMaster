@@ -5,6 +5,7 @@ import Login from './views/Login.vue'
 import Regsister from './views/Register.vue'
 import Create from './views/Create.vue'
 import NotFound from './views/NotFound.vue'
+import Play from './views/Play.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -13,6 +14,7 @@ const router = createRouter({
         { path: '/login', component: Login },
         { path: '/create', component: Create },
         { path: '/register', component: Regsister },
+        { path: '/play', component: Play },
         { path: '/:notFound(.*)', component: NotFound },
     ],
 })

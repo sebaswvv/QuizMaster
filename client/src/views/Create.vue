@@ -44,6 +44,14 @@ function publishQuiz() {
     return;
   }
 
+  // check if timeToAnswer is a number
+  questions.value.forEach((question: any) => {
+    if (isNaN(question.timeToAnswer)) {
+      errorMessage.value = "Vul a.u.b. een geldig getal in bij de tijd";
+      return;
+    }
+  });
+
   quizStore.publishQuiz();
 }
 
@@ -72,6 +80,11 @@ function addQuestion() {
     ],
   });
 }
+function removeQuestion(question: any) {
+  // remove question from questions
+  const index = questions.value.indexOf(question);
+  questions.value.splice(index, 1);
+}
 </script>
 
 <template>
@@ -95,7 +108,7 @@ function addQuestion() {
     </div>
     <!-- foreach question a new question box execpt the first one -->
     <div v-for="(question, index) in questions" :key="index">
-      <NewQuestionBox :question="question" />
+      <NewQuestionBox :question="question" @remove-question="removeQuestion" />
     </div>
 
     <!-- button to add new question -->

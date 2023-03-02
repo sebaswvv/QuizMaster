@@ -37,7 +37,7 @@ exports.getQuiz = async (req: Request, res: Response) => {
 
     const quiz = await quizService.getQuiz(req.query.id);
     if (!quiz) {
-        res.status(400).json({ message: 'Error getting quiz' });
+        res.status(400).json({ message: 'That quiz does not exist' });
         return;
     }
     //send the req.body back
