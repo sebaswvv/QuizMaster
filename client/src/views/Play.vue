@@ -7,8 +7,7 @@
         <h1 class="text-center">{{ quizName }}</h1>
         <button v-if="!started && !ended" class="button" @click="startGame">SPEEL</button>
         <Question v-if="started" :question="currentQuestion" :round="round" :key="round" @nextQuestion="nextQuestion" />
-        <h1 v-if="ended" class="text-center">Thats all, thnx for playing.</h1>
-        <!-- back home -->
+        <h2 v-if="ended" class="text-center">Dat was hem, bedankt voor het spelen</h2>
         <button v-if="ended" class="button" @click="$router.push('/')">Terug naar home</button>
     </div>
 </template>
@@ -39,7 +38,6 @@ function nextQuestion() {
         ended.value = true;
     } else {
         // load the next question
-        // remount the component
         currentQuestion.value = questions.value[round.value];
     }
 }
