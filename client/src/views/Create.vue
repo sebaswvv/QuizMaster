@@ -10,9 +10,40 @@ const quizStore = useQuizStore();
 
 // set the questions to the questions in the quizStore
 const questions: any = ref(quizStore.quiz.questions);
+const errorMessage = ref("");
 
 function publishQuiz() {
-  // publish quiz to database
+  // check if each question has a question, answers and at least one correct answer
+  let hasError = false;
+  // check if there is at least one question
+  if (questions.value.length === 0) {
+    hasError = true;
+  }
+  questions.value.forEach((question: any) => {
+    if (question.text === "") {
+      hasError = true;
+    }
+    question.options.forEach((option: any) => {
+      if (option.text === "") {
+        hasError = true;
+      }
+    });
+    let hasCorrectAnswer = false;
+    question.options.forEach((option: any) => {
+      if (option.isCorrect) {
+        hasCorrectAnswer = true;
+      }
+    });
+    if (!hasCorrectAnswer) {
+      hasError = true;
+    }
+  });
+
+  if (hasError) {
+    errorMessage.value = "Vul a.u.b. alle velden in";
+    return;
+  }
+
   quizStore.publishQuiz();
 }
 
@@ -46,41 +77,69 @@ function addQuestion() {
 <template>
   <div class="container">
     <Navbar />
-    <h1>Welkom bij de pubquiz bouwer</h1>
-    <p v-if="!loginStore.isLoggedIn">
-      Om je quiz op te maken moet je eerst
-      <router-link to="/login">inloggen</router-link>
-    </p>
+    <div class="intro">
+      <h1 class="text-center mb-5">Welkom bij de pubquiz bouwer</h1>
+      <p class="text-center" v-if="!loginStore.isLoggedIn">
+        Om een quiz op te maken moet je eerst
+        <router-link to="/login">inloggen</router-link>
+      </p>
 
-    <div v-if="loginStore.isLoggedIn" class="create-quiz">
-      <h3>Hoe wil je je quiz noemen?</h3>
-      <div class="mb-3 form-group">
-        <input type="text" class="form-control" id="quizName" placeholder="b.v.b 'F1 quiz''"
-          v-model="quizStore.quiz.name" />
+      <div v-if="loginStore.isLoggedIn" class="create-quiz">
+        <h3>Hoe wil je je quiz noemen?</h3>
+        <div class="mb-3 form-group">
+          <input type="text" class="form-control mb-3" id="quizName" placeholder="b.v.b 'F1 quiz''"
+            v-model="quizStore.quiz.name" />
+          <p>Voeg een vraag toe; geef de vraag een naam, antwoorden en vink het juiste antwoord aan.</p>
+        </div>
       </div>
     </div>
-
     <!-- foreach question a new question box execpt the first one -->
     <div v-for="(question, index) in questions" :key="index">
       <NewQuestionBox :question="question" />
     </div>
 
     <!-- button to add new question -->
-    <button v-if="quizStore.quiz.name != ''" class="btn btn-primary" @click="addQuestion">
+    <button v-if="quizStore.quiz.name != ''" class="button" @click="addQuestion">
       Voeg een vraag toe
     </button>
+
+    <button v-if="quizStore.quiz.questions.length > 0" class="button mb-3" @click="publishQuiz">
+      Publiceer Quiz
+    </button>
+    <p class="fault">{{ errorMessage }}</p>
   </div>
-  <button v-if="quizStore.quiz.name != ''" class="btn btn-primary" @click="publishQuiz">
-    Maak Quiz
-  </button>
 </template>
   
 
   
 <style scoped>
-.question-box {
-  border: 1px solid black;
-  padding: 10px;
+.fault {
+  color: red;
+}
+
+.succes {
+  color: green;
+}
+
+h1 {
+  font-family: 'Fredoka One', cursive;
+}
+
+.intro {
+  padding-top: 5vh;
+  padding: 5vh;
+  padding-bottom: 5vh;
+  margin-bottom: 3vh;
+  background-color: #F4F1DE;
+}
+
+.button {
+  font-family: 'Boogaloo', cursive;
+  color: white;
+  font-size: 25px;
+  padding: 1.5vh;
+  border-radius: 2rem;
+  background-color: #0D5D56;
 }
 </style>
   

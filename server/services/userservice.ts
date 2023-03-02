@@ -13,6 +13,10 @@ class UserService {
         return this.userRepository.getUserByUsername(username);
     }
 
+    async checkUserNameExists(username: string) {
+        return this.userRepository.checkUserNameExists(username);
+    }
+
     async registerUser(username: string, password: string, email: string) {
         // encrypt password
         const encryptedPassword = this.encryptPassword(password);

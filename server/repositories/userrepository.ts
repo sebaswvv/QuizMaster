@@ -6,7 +6,13 @@ class UserRepository extends Repository {
 
     async getUserByUsername(username: string) {
         return await this.knex.select('*').from('users').where('username', username);
-    }    
+    }  
+    
+    async checkUserNameExists(username: string) {
+        const user = await this.knex.select('*').from('users').where('username', username);
+        return user.length > 0;
+    }
+
 
     async registerUser(username: string, password: string, email: string) {
         // insert user with role user
