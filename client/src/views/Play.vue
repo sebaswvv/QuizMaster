@@ -5,8 +5,11 @@
     <div class="container">
         <Navbar />
         <h1 class="text-center">{{ quizName }}</h1>
-        <button v-if="!started" class="button" @click="startGame">SPEEL</button>
+        <button v-if="!started && !ended" class="button" @click="startGame">SPEEL</button>
         <Question v-if="started" :question="currentQuestion" :round="round" :key="round" @nextQuestion="nextQuestion" />
+        <h1 v-if="ended" class="text-center">Thats all, thnx for playing.</h1>
+        <!-- back home -->
+        <button v-if="ended" class="button" @click="$router.push('/')">Terug naar home</button>
     </div>
 </template>
 
@@ -20,6 +23,7 @@ import axios from "axios";
 const quizName = ref('');
 const questions = ref([]);
 const started = ref(false);
+const ended = ref(false);
 const currentQuestion = ref(null);
 const round = ref(0);
 
@@ -32,6 +36,7 @@ function nextQuestion() {
         started.value = false;
         round.value = 0;
         console.log('finished');
+        ended.value = true;
     } else {
         // load the next question
         // remount the component

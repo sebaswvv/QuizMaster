@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 const { question, round } = defineProps(['question', 'round']);
 
 // const timeToAnswer = question.time_to_answer;
-const timeToAnswerInSeconds = 5;
+const timeToAnswerInSeconds = 2;
 const timeIsUp = ref(false);
 const correctAnswer = ref('');
 
