@@ -5,22 +5,47 @@
     <div class="container">
         <Navbar />
         <h1 class="text-center">{{ quizName }}</h1>
-        <button class="button" @click="playGame">SPEEL</button>
+        <button v-if="!started" class="button" @click="startGame">SPEEL</button>
+        <Question v-if="started" :question="currentQuestion" :round="round" :key="round" @nextQuestion="nextQuestion" />
     </div>
 </template>
 
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
+import Question from "../components/Question.vue";
 import TimerSlider from '../components/TimerSlider.vue';
 import { ref, onMounted } from 'vue';
 import axios from "axios";
 
 const quizName = ref('');
 const questions = ref([]);
+const started = ref(false);
+const currentQuestion = ref(null);
 const round = ref(0);
 
-function playGame() {
+function nextQuestion() {
+    // next round
+    round.value++
+    // if round is equal to the amount of questions, the game is finished
+    if (round.value === questions.value.length) {
+        // game is finished
+        started.value = false;
+        round.value = 0;
+        console.log('finished');
+    } else {
+        // load the next question
+        // remount the component
+        currentQuestion.value = questions.value[round.value];
+    }
+}
+
+function startGame() {
     // load the question.index = round as component
+    currentQuestion.value = questions.value[round.value];
+
+    // start the game to show the component
+    started.value = true;
+
     // after the question is finished, a button should appear to load the next question
     // round++
     // if round is equal to the amount of questions, the game is finished
@@ -63,4 +88,4 @@ h1 {
     margin-top: 3vh;
 }
 </style>
-  
+
