@@ -4,11 +4,13 @@
     </div>
     <div class="container">
         <Navbar />
-        <h1 class="text-center">{{ quizName }}</h1>
+        <button class="button">Speel een eigen spel</button>
+        <button class="button">Speel een openbaar spel</button>
+        <!-- <h1 class="text-center">{{ quizName }}</h1>
         <button v-if="!started && !ended" class="button" @click="startGame">SPEEL</button>
         <Question v-if="started" :question="currentQuestion" :round="round" :key="round" @nextQuestion="nextQuestion" />
         <h2 v-if="ended" class="text-center">Dat was hem, bedankt voor het spelen</h2>
-        <button v-if="ended" class="button" @click="$router.push('/')">Terug naar home</button>
+        <button v-if="ended" class="button" @click="$router.push('/')">Terug naar home</button> -->
     </div>
 </template>
 
@@ -47,10 +49,6 @@ function startGame() {
 
     // start the game to show the component
     started.value = true;
-
-    // after the question is finished, a button should appear to load the next question
-    // round++
-    // if round is equal to the amount of questions, the game is finished
 }
 
 onMounted(async () => {
@@ -58,7 +56,7 @@ onMounted(async () => {
     // with id 1 in qeury params
     const response = await axios.get('http://localhost:3000/api/quizzes', {
         params: {
-            id: 1
+            id: 3
         }
     });
     const data = response.data;

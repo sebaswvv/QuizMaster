@@ -31,6 +31,7 @@ exports.addQuiz = async (req: Request, res: Response) => {
 }
 
 exports.getQuiz = async (req: Request, res: Response) => {
+    // TODO: get Bearer token from header
     const quizService = new QuizService();
 
     //console.log(req.query.id);
