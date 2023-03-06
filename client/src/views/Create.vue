@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import Navbar from "../components/Navbar.vue";
+import HomeIcon from "../components/HomeIcon.vue";
+import AccountIcon from "../components/AccountIcon.vue";
 import { useLoginStore } from "../stores/useLogin";
 import { useQuizStore } from "../stores/useQuiz";
 import NewQuestionBox from "../components/NewQuestionBox.vue";
@@ -88,8 +89,9 @@ function removeQuestion(question: any) {
 </script>
 
 <template>
-  <div class="container">
-    <Navbar />
+  <div class="container-fluid">
+    <HomeIcon />
+    <AccountIcon />
     <div class="intro">
       <h1 class="text-center mb-5">Welkom bij de pubquiz bouwer</h1>
       <p class="text-center" v-if="!loginStore.isLoggedIn">
