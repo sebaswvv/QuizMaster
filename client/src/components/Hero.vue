@@ -1,25 +1,24 @@
 <script setup lang="ts">
 import { useLoginStore } from "../stores/useLogin";
 import { useQuizStore } from "../stores/useQuiz";
+
 import AccountIcon from "./AccountIcon.vue";
 import HomeIcon from "./HomeIcon.vue";
 
 const loginStore = useLoginStore();
 const quizStore = useQuizStore();
 
-// function handleLogout() {
-//   // wipe states
-//   loginStore.logout();
-//   quizStore.resetQuiz();
-// }
+function handleLogout() {
+  loginStore.logout();
+  quizStore.resetQuiz();
+}
 </script>
 
 <template>
-  <div class="hero-section d-flex flex-column justify-content-center align-items-center">
-    <!-- login icon -->
+  <div class="hero-section">
     <home-icon />
     <account-icon />
-    <!-- login icon -->
+    <a class="top-right" @click="handleLogout">Log uit</a>
     <h1 class="text-center">Maak en speel je eigen pubquiz!</h1>
     <h2 class="text-center">QuizMaster</h2>
     <div class="d-flex flex-row justify-content-center">
@@ -34,6 +33,19 @@ const quizStore = useQuizStore();
 </template>
 
 <style scoped>
+.top-right {
+  position: absolute;
+  top: 4rem;
+  right: 2rem;
+  font-family: 'Boogaloo', cursive;
+  color: #0D5D56;
+  font-size: 1.5rem;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
 .hero-section {
   /* height: 50vh; */
   padding-top: 10vh;

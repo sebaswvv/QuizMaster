@@ -96,6 +96,17 @@ class QuizRepository extends Repository {
             console.log(error);
         }
     }
+
+    async getAllQuizzesFromUser(userId: number) {
+        // get all quiz ids from user
+        const quizIds = await this.knex('quizzes').where('user_id', userId).select('id');
+        const quizzes = [];
+        for (const quizId of quizIds) {
+            const quiz = await this.getQuiz(quizId.id);
+            quizzes.push(quiz);
+        }
+        return quizzes;
+    }
 }
 
 export { QuizRepository };

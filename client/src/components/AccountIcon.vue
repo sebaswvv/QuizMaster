@@ -1,6 +1,7 @@
 <template>
-    <router-link to="/account">
+    <a @click="openAccountPage" href="#">
         <div class="top-right">
+            <!-- icon -->
             <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC"
@@ -20,12 +21,40 @@
                         stroke-width="2" stroke-linecap="round"></path>
                 </g>
             </svg>
+            <!-- icon -->
         </div>
-    </router-link>
+    </a>
+
+    <LoginModal v-if="modalIsOpen" @close="modalIsOpen = false" />
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 
+import { useLoginStore } from '../stores/useLogin';
+import router from '../router';
+import LoginModal from './LoginModal.vue';
+
+const loginStore = useLoginStore();
+
+const modalIsOpen = ref(false);
+
+function openAccountPage() {
+    if (loginStore.isLoggedIn) {
+        // redirect to account page
+        router.push('/account');
+        return;
+    }
+    // if not, open login modal	
+    modalIsOpen.value = true;
+}
+
+// click outside modal to close
+window.addEventListener('click', (e: MouseEvent) => {
+    if (e.target === document.querySelector('.modal')) {
+        modalIsOpen.value = false;
+    }
+});
 </script>
 
 <style scoped>

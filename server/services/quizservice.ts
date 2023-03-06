@@ -66,6 +66,14 @@ class QuizService {
         }
     }
 
+    async getAllQuizzesFromUser(userId: any) {
+        try {
+            const quizzes = await this.quizRepository.getAllQuizzesFromUser(userId);
+            return quizzes;
+        } catch (error) {
+            return false;
+        }
+    }      
 }
 
 export { QuizService };

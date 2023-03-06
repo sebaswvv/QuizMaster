@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
+
 import HomeIcon from "../components/HomeIcon.vue";
+import LoginModal from "../components/LoginModal.vue";
 import AccountIcon from "../components/AccountIcon.vue";
+import NewQuestionBox from "../components/NewQuestionBox.vue";
+
 import { useLoginStore } from "../stores/useLogin";
 import { useQuizStore } from "../stores/useQuiz";
-import NewQuestionBox from "../components/NewQuestionBox.vue";
 
 const loginStore = useLoginStore();
 const quizStore = useQuizStore();
@@ -12,6 +15,8 @@ const quizStore = useQuizStore();
 // set the questions to the questions in the quizStore
 const questions: any = ref(quizStore.quiz.questions);
 const errorMessage = ref("");
+
+const modalIsOpen = ref(false);
 
 function publishQuiz() {
   // check if each question has a question, answers and at least one correct answer
@@ -58,7 +63,7 @@ function publishQuiz() {
 
 function addQuestion() {
   // add new empty question to questions
-  const newQuestion = questions.value.push({
+  questions.value.push({
     text: "",
     image: "",
     timeToAnswer: 0,
@@ -81,11 +86,19 @@ function addQuestion() {
     ],
   });
 }
+
 function removeQuestion(question: any) {
   // remove question from questions
   const index = questions.value.indexOf(question);
   questions.value.splice(index, 1);
 }
+
+// click outside modal to close
+window.addEventListener('click', (e: MouseEvent) => {
+  if (e.target === document.querySelector('.modal')) {
+    modalIsOpen.value = false;
+  }
+});
 </script>
 
 <template>
@@ -96,7 +109,7 @@ function removeQuestion(question: any) {
       <h1 class="text-center mb-5">Welkom bij de pubquiz bouwer</h1>
       <p class="text-center" v-if="!loginStore.isLoggedIn">
         Om een quiz op te maken moet je eerst
-        <router-link to="/login">inloggen</router-link>
+        <a class="href" @click="modalIsOpen = true">inloggen</a>
       </p>
 
       <div v-if="loginStore.isLoggedIn" class="create-quiz">
@@ -123,6 +136,7 @@ function removeQuestion(question: any) {
     </button>
     <p class="fault">{{ errorMessage }}</p>
   </div>
+  <LoginModal v-if="modalIsOpen" @close="modalIsOpen = false" />
 </template>
   
 
@@ -155,6 +169,19 @@ h1 {
   padding: 1.5vh;
   border-radius: 2rem;
   background-color: #0D5D56;
+}
+
+.href {
+  color: #0D5D56;
+  /* underlined */
+  text-decoration: underline;
+}
+
+.href:hover {
+  color: #0D5D56;
+  /* mouse pointer */
+  cursor: pointer;
+  text-decoration: underline;
 }
 </style>
   

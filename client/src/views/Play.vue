@@ -39,6 +39,10 @@ import router from '../router';
 import { ref, onMounted } from 'vue';
 import axios from "axios";
 
+import { useLoginStore } from "../stores/useLogin";
+
+const loginStore = useLoginStore();
+
 const small = ref(false);
 
 function handleParticipate() {
@@ -47,7 +51,14 @@ function handleParticipate() {
 
 function handlePlayOwnQuiz() {
     // set user to account to see and play their own quizzes
-    router.push('/account');
+    // check if user is logged in
+    if (!loginStore.isLoggedIn) {
+        // if not logged in, redirect to login page
+        router.push('/login');
+    } else {
+        // if logged in, redirect to account page
+        router.push('/account');
+    }
 }
 
 function handleSearchQuiz() {

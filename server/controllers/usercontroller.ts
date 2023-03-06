@@ -59,7 +59,7 @@ exports.login = async (req: Request, res: Response) => {
 
     // generate token with username and key also audience and issuer and algorithm and expiresIn
     const key = process.env.JWT_KEY;
-    const token = jwt.sign({ username: user[0].username }, key, { expiresIn: "1h", issuer: "http://localhost:3000", audience: "http://localhost:3000", algorithm: "HS256" });
+    const token = jwt.sign({ username: user[0].username, userId: user[0].id }, key, { expiresIn: "1h", issuer: "http://localhost:3000", audience: "http://localhost:3000", algorithm: "HS256" });
 
     // send the jwt in the response
     res.status(200).json({

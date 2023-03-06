@@ -30,6 +30,36 @@ exports.addQuiz = async (req: Request, res: Response) => {
     res.status(200).json(quiz);
 }
 
+exports.getAllQuizzesFromUser = async (req: Request, res: Response) => {
+    // decode JWT
+    if (!req.headers.authorization) {
+        res.status(401).json({ message: 'Invalid token' });
+        return;
+    }
+    const token = req.headers.authorization!.split(' ')[1];
+
+    let userId = '';
+    // verify token
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_KEY);
+        userId = decoded.userId;
+        // TODO check if the token is not expired      
+    } catch (error) {
+        res.status(401).json({ message: 'Invalid token' });
+        return;
+    }
+
+    // get all quizzes from user
+    const quizService = new QuizService();
+    const quizzes = await quizService.getAllQuizzesFromUser(userId);
+    if (!quizzes || quizzes.length === 0) {
+        res.status(400).json({ message: 'Error getting quizzes' });
+        return;
+    }
+    // send the req.body back
+    res.status(200).json(quizzes);
+}
+
 exports.getQuiz = async (req: Request, res: Response) => {
     // TODO: get Bearer token from header
     const quizService = new QuizService();
