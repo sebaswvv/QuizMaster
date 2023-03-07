@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import axios from "axios";
+import router from "../router";
 import { ref } from "vue";
 import { useLoginStore } from "../stores/useLogin";
 import { useQuizStore } from "../stores/useQuiz";
@@ -14,25 +15,16 @@ const errorMessage = ref();
 
 async function login() {
     try {
-        const response = await axios.post("http://localhost:3000/api/users/login", {
-            username: username.value,
-            password: password.value,
-        });
-
-        // check if response is 200
-        if (response.status === 200) {
-            // store login in the store
-            loginStore.login(username.value, response.data.token, response.data.userId);
+        if (await loginStore.login(username.value, password.value)) {
+            // router.push("/");
+            // close modal
+            errorMessage.value = "U bent ingelogd";
             quizStore.setUserId();
-            errorMessage.value = "Ingelogd! U kunt nu verder gaan";
-        }
-    } catch (error: any) {
-        // check if error is 401
-        if (error.response.status === 401) {
-            errorMessage.value = "Verkeerde gebruikersnaam of wachtwoord";
         } else {
-            errorMessage.value = "Er is iets misgegaan, probeer het later opnieuw";
+            errorMessage.value = "Verkeerde gebruikersnaam of wachtwoord";
         }
+    } catch (error) {
+        errorMessage.value = "Verkeerde gebruikersnaam of wachtwoord";
     }
 }
 </script>
@@ -61,8 +53,8 @@ async function login() {
                 </div>
                 <div class="form-group d-md-flex">
                     <!-- <div class="w-50 text-md-right">
-                                                                            <a href="#">Forgot Password</a>
-                                                                        </div> -->
+                                                                                                    <a href="#">Forgot Password</a>
+                                                                                                </div> -->
                 </div>
                 <p class="text-center">
                     Nog geen account?

@@ -1,4 +1,5 @@
 import {defineStore} from 'pinia'
+import axios from 'axios'
 
 export const useLoginStore = defineStore({
     id: 'login',
@@ -15,11 +16,26 @@ export const useLoginStore = defineStore({
         getToken: (state) => state.token,
     },  
     actions: {
-        login(username: string, token: string, id: number) {
-            this.loggedIn = true
-            this.username = username
-            this.token = token
-            this.id = id
+        async login(username: string, password: string) {
+            try {
+                const response = await axios.post("http://localhost:3000/api/users/login", {
+                  username: username,
+                  password: password,
+                });
+            
+                // check if response is 200
+                if (response.status === 200) {
+                  // store login in the store
+                  this.loggedIn = true;
+                  this.username = response.data.username;
+                  this.id = response.data.id;
+                  this.token = response.data.token;
+                  return true;
+                }
+              } catch (error: any) {
+                // check if error is 401
+                return false;
+              }
         },
         logout() {
             this.loggedIn = false
