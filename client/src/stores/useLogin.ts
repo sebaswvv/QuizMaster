@@ -27,8 +27,8 @@ export const useLoginStore = defineStore({
                 if (response.status === 200) {
                   // store login in the store
                   this.loggedIn = true;
-                  this.username = response.data.username;
-                  this.id = response.data.id;
+                  this.username = username;
+                  this.id = response.data.userId;
                   this.token = response.data.token;
                   return true;
                 }

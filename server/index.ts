@@ -1,5 +1,6 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
 
 const cors = require('cors');
 
@@ -10,6 +11,9 @@ dotenv.config();
 
 const app: Express = express();
 const port = 3000;
+
+// set max limit to 50mb
+app.use(bodyParser.json({ limit: '1.1mb' }));
 
 // use JSON
 app.use(express.json());
