@@ -19,6 +19,7 @@ TRUNCATE questions;
 TRUNCATE quizzes;  
 
 ## TODO:
+[] - update audience and issuer to work on remote
 [] - Add search function to /choose page
 [] - Update an entire quiz  
 [] - delete an entire quiz  
