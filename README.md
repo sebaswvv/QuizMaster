@@ -22,6 +22,7 @@ TRUNCATE questions;
 TRUNCATE quizzes;  
 
 ## TODO:
+[] - fix bug that says not all fields are filled in, but they are. Maby a space?  
 [] - update audience and issuer to work on remote
 [] - Add search function to /choose page
 [] - Update an entire quiz  
