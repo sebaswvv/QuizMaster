@@ -8,9 +8,11 @@ DB_NAME=""
 SALT="" (For encrypting passwords)  
 JWT_KEY="" (Secret key to generate JWT tokens)  
 
+(Instead of running the database with docker you can connect to another mysql database respectively)
+
 To start this application run:  
 \QuizMaster\database: docker compose up   
-(Instead of running the database with docker you can connect to another mysql database respectively)  
+  
 \QuizMaster\server: npm run dev  
 \QuizMaster\client: npm run dev  
 
