@@ -24,32 +24,32 @@
             </div>
         </div>
     </div>
+    <LoginModal v-if="modalIsOpen" @close="modalIsOpen = false" />
 </template>
 
 <script setup lang="ts">
 import HomeIcon from "../components/HomeIcon.vue";
+import LoginModal from "../components/LoginModal.vue";
 import AccountIcon from "../components/AccountIcon.vue";
-import Question from "../components/Question.vue";
 import router from '../router';
-import { ref, onMounted } from 'vue';
-import axios from "axios";
+import { ref } from 'vue';
 
 import { useLoginStore } from "../stores/useLogin";
 
 const loginStore = useLoginStore();
 
 const small = ref(false);
+const modalIsOpen = ref(false);
 
 function handleParticipate() {
     small.value = true;
 }
 
 function handlePlayOwnQuiz() {
-    // set user to account to see and play their own quizzes
     // check if user is logged in
     if (!loginStore.isLoggedIn) {
         // if not logged in, redirect to login page
-        router.push('/login');
+        modalIsOpen.value = true;
     } else {
         // if logged in, redirect to account page
         router.push('/account');

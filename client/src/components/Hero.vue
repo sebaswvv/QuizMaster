@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { useLoginStore } from "../stores/useLogin";
 import { useQuizStore } from "../stores/useQuiz";
 
@@ -21,8 +20,8 @@ function handleLogout() {
 <template>
   <div class="hero-section">
     <home-icon />
-    <account-icon/>
-    <a class="top-right" @click="handleLogout">Log uit</a>
+    <account-icon />
+    <a v-if="loginStore.loggedIn" class="top-right" @click="handleLogout">Log uit</a>
     <h1 class="text-center">Maak en speel je eigen pubquiz!</h1>
     <h2 class="text-center">QuizMaster</h2>
     <div class="d-flex flex-row justify-content-center">

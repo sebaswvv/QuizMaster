@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import axios from "axios";
-import router from "../router";
 import { ref, defineEmits } from "vue";
 import { useLoginStore } from "../stores/useLogin";
 import { useQuizStore } from "../stores/useQuiz";
@@ -55,8 +53,8 @@ async function login() {
                 </div>
                 <div class="form-group d-md-flex">
                     <!-- <div class="w-50 text-md-right">
-                                                                                                                            <a href="#">Forgot Password</a>
-                                                                                                                        </div> -->
+                                                                                                                                <a href="#">Forgot Password</a>
+                                                                                                                            </div> -->
                 </div>
                 <p class="text-center">
                     Nog geen account?

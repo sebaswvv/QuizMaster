@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useLoginStore } from '../stores/useLogin';
+import { useQuizStore } from '../stores/useQuiz';
 import HomeIcon from '../components/HomeIcon.vue';
 import router from '../router';
 import axios from 'axios';
@@ -14,6 +15,7 @@ interface quiz {
 }
 
 const loginStore = useLoginStore();
+const quizStore = useQuizStore();
 
 const userName = ref(loginStore.getUsername);
 
@@ -38,11 +40,17 @@ onMounted(async () => {
     // // add base64 string to the imageSrc
     // imageSrc.value = 'data:image/jpeg;base64,' + image;
 });
+function handleLogout() {
+    loginStore.logout();
+    quizStore.resetQuiz();
+    router.push('/');
+}
 </script>
 
 <template>
     <div class="container-fluid heading">
         <HomeIcon />
+        <a class="top-right" @click="handleLogout">Log uit</a>
         <h2 class="text-center">Welkom {{ userName }}</h2>
         <p class="header-text text-center">Hier kan je je eigen quizzes inzien, aanpassen en spelen!</p>
     </div>
@@ -58,7 +66,7 @@ onMounted(async () => {
                     <router-link :to="{ name: 'play', params: { id: quiz.id } }" class="btn btn-primary mx-1 mb-2">Speel
                         quiz</router-link>
                     <!-- <a href="#" class="btn btn-primary mx-1 mb-2">Pas deze quiz aan</a>
-                                <a href="#" class="btn btn-danger mx-1 mb-2">Verwijder deze quiz</a> -->
+                                                                                    <a href="#" class="btn btn-danger mx-1 mb-2">Verwijder deze quiz</a> -->
                 </div>
             </div>
         </div>
@@ -66,6 +74,20 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+a:hover {
+    /* cursor */
+    cursor: pointer;
+}
+
+.top-right {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    font-family: 'Boogaloo', cursive;
+    color: #0D5D56;
+    font-size: 1.5rem;
+}
+
 h2 {
     font-size: 2.5rem;
     font-family: 'Fredoka One', cursive;
