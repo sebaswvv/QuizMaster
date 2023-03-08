@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import axios from 'axios';
+import router from '../router';
 
 interface Quiz {
     id: number;
@@ -24,6 +25,10 @@ async function handleSearchQuiz() {
     searchedQuizzes.value = response.data;
     searched.value = true;
 }
+
+function handlePlayQuiz(id: number) {
+    router.push(`/play/${id}`);
+}
 </script>
 
 <template>
@@ -44,7 +49,8 @@ async function handleSearchQuiz() {
                     Geen quizzen gevonden.
                 </div>
                 <div v-else class="list-group">
-                    <a v-for="quiz in searchedQuizzes" :key="quiz.id" class="list-group-item">
+                    <a @click="handlePlayQuiz(quiz.id)" v-for="quiz in searchedQuizzes" :key="quiz.id"
+                        class="list-group-item">
                         {{ quiz.name }}
                     </a>
                 </div>
@@ -54,6 +60,10 @@ async function handleSearchQuiz() {
 </template>
 
 <style scoped>
+a:hover {
+    cursor: pointer;
+}
+
 .alert-info {
     font-family: 'Boogaloo', cursive;
     font-size: 1.5rem;
