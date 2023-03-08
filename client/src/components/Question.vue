@@ -8,7 +8,7 @@ const timeParts = question.time_to_answer.split(':');
 const timeToAnswerInSeconds = (+timeParts[0]) * 60 * 60 + (+timeParts[1]) * 60 + (+timeParts[2]);;
 
 const timeIsUp = ref(false);
-const correctAnswer = ref('');
+const correctAnswer = ref('...');
 
 // when timer slider emits timeIsUp, set timeIsUp to true
 function handleTimeIsUp() {
@@ -31,7 +31,7 @@ function handleTimeIsUp() {
 onMounted(() => {
     // reset own variables and components
     timeIsUp.value = false;
-    correctAnswer.value = '';
+    correctAnswer.value = '...';
 });
 </script>
 
@@ -43,9 +43,9 @@ onMounted(() => {
             <div class="option-letter">{{ String.fromCharCode(index + 65) }}.</div>
             <div class="option-text">{{ option.text }}</div>
         </div>
-        <div v-if="timeIsUp">
+        <div>
             <p class="correct-answer">Het juiste antwoord is: {{ correctAnswer }}</p>
-            <button @click="$emit('nextQuestion')" class="button">Volgende vraag</button>
+            <button v-if="timeIsUp" @click="$emit('nextQuestion')" class="px-4 button">Volgende vraag</button>
         </div>
     </div>
 </template>

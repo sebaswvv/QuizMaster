@@ -34,7 +34,7 @@ onMounted(async () => {
 
 });
 
-watch(timeInSeconds, (newValue: any, oldValue) => {
+watch(timeInSeconds, (newValue: any) => {
     clearInterval(timerId!);
     slider.value!.style.width = '0px';
     elapsedTime = 0;
