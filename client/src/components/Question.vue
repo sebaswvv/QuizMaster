@@ -10,34 +10,33 @@ const timeToAnswerInSeconds = (+timeParts[0]) * 60 * 60 + (+timeParts[1]) * 60 +
 const timeIsUp = ref(false);
 const correctAnswer = ref('');
 
+// when timer slider emits timeIsUp, set timeIsUp to true
+function handleTimeIsUp() {
+    timeIsUp.value = true;
+
+    // show the correct answer
+    question.options.forEach((option: any) => {
+        if (option.is_correct) {
+            correctAnswer.value = option.text;
+            // style the correct option.id with a green background
+            const element = document.getElementById(option.id);
+            if (element) {
+                element.style.backgroundColor = '#27f115';
+            }
+        }
+    });
+}
+
 // on mounted, start the timer
 onMounted(() => {
     // reset own variables and components
     timeIsUp.value = false;
     correctAnswer.value = '';
-
-    // set timer to show the correct answer
-    setTimeout(() => {
-        timeIsUp.value = true;
-
-        // show the correct answer
-        question.options.forEach((option: any) => {
-            if (option.is_correct) {
-                correctAnswer.value = option.text;
-                // style the correct option.id with a green background
-                const element = document.getElementById(option.id);
-                if (element) {
-                    element.style.backgroundColor = '#27f115';
-                }
-            }
-        });
-
-    }, timeToAnswerInSeconds * 1000);
 });
 </script>
 
 <template>
-    <TimerSlider :timeInSeconds="timeToAnswerInSeconds" />
+    <TimerSlider :timeInSeconds="timeToAnswerInSeconds" @timeIsUp="handleTimeIsUp" />
     <div class="center">
         <h2>Vraag {{ round + 1 }}: {{ question.text }}</h2>
         <div v-for="(option, index) in question.options" :key="option.id" :id="option.id" class="option-block">
@@ -67,7 +66,7 @@ h2 {
 .option-block {
     display: flex;
     align-items: center;
-    width: 100%;
+    width: 50%;
     margin-bottom: 3px;
     background-color: #0D5D56;
     padding: 10px;

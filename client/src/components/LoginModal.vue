@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import axios from "axios";
 import router from "../router";
-import { ref } from "vue";
+import { ref, defineEmits } from "vue";
 import { useLoginStore } from "../stores/useLogin";
 import { useQuizStore } from "../stores/useQuiz";
 
 const loginStore = useLoginStore();
 const quizStore = useQuizStore();
-
+const emit = defineEmits(["close"]);
 const username = ref();
 const password = ref();
 
@@ -16,10 +16,12 @@ const errorMessage = ref();
 async function login() {
     try {
         if (await loginStore.login(username.value, password.value)) {
-            // router.push("/");
-            // close modal
             errorMessage.value = "U bent ingelogd";
             quizStore.setUserId();
+            // wait 2 seconds
+            setTimeout(() => {
+                emit("close");
+            }, 500);
         } else {
             errorMessage.value = "Verkeerde gebruikersnaam of wachtwoord";
         }
@@ -53,8 +55,8 @@ async function login() {
                 </div>
                 <div class="form-group d-md-flex">
                     <!-- <div class="w-50 text-md-right">
-                                                                                                    <a href="#">Forgot Password</a>
-                                                                                                </div> -->
+                                                                                                                            <a href="#">Forgot Password</a>
+                                                                                                                        </div> -->
                 </div>
                 <p class="text-center">
                     Nog geen account?

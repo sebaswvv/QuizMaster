@@ -3,9 +3,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick } from "vue";
+import { ref, onMounted, watch, nextTick, defineEmits } from "vue";
 
 const { timeInSeconds } = defineProps(['timeInSeconds']);
+
+const emit = defineEmits(['timeIsUp']);
 
 const slider = ref<HTMLElement | null>(null);
 let timerId: ReturnType<typeof setInterval> | null = null;
@@ -25,6 +27,7 @@ onMounted(async () => {
         elapsedWidth = totalWidth * (elapsedTime / (timeInSeconds * 1000));
         if (elapsedTime >= timeInSeconds * 1000) {
             clearInterval(timerId!);
+            emit('timeIsUp');
         }
         slider.value!.style.width = `${elapsedWidth}px`;
     }, 10);
