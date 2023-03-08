@@ -9,6 +9,15 @@ class QuizService {
         this.quizRepository = new QuizRepository();
     }
 
+    async searchQuizzes(search: any) {
+        try {
+            const quizzes = await this.quizRepository.searchQuizzes(search);
+            return quizzes;
+        } catch (error) {
+            return false;
+        }   
+    }
+
     async addQuiz(rawQuiz: any) {
         // check if all required fields are present
         if (!rawQuiz.name || !rawQuiz.userId || rawQuiz.isPublic === undefined || !rawQuiz.questions) {

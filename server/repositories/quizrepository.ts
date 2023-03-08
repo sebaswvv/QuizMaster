@@ -5,6 +5,19 @@ class QuizRepository extends Repository {
         super();
     }
 
+    async searchQuizzes(search: any) {
+        try {
+            // search only public quizzes with name like search
+            const quizzes = await this.knex('quizzes')
+            .select('quizzes.id', 'quizzes.name')
+            .where('quizzes.public', true)
+            .andWhere('quizzes.name', 'like', `%${search}%`);
+            return quizzes;
+        } catch (error) {
+            console.log(error);
+        }        
+    }
+
     async addQuiz(quiz: Quiz) {
         try{
             // insert into quizzes name, userId, isPublic

@@ -44,26 +44,29 @@ function startGame() {
 }
 
 onMounted(async () => {
-    if (!loginStore.isLoggedIn) {
-        router.push('/');
-        return;
+    // get the quiz with that id as query param and pass the bearer token from the login store if it exists
+    try {
+        const response = await axios.get(`http://localhost:3000/api/quizzes`, {
+            params: {
+                id,
+            },
+            headers: {
+                Authorization: `Bearer ${loginStore.token}`,
+            },
+        });
+        const quiz = response.data;
+        // set questions
+        questions.value = quiz.questions;
+
+        // set quizName
+        quizName.value = quiz.name;
+    } catch (error: any) {
+        // check if the error is a 401 unauthorized
+        if (error.response.status === 401) {
+            // redirect to login
+            router.push('/');
+        }
     }
-    // get the quiz with that id as query param and pass the bearer token from the login store
-    const response = await axios.get(`http://localhost:3000/api/quizzes/`, {
-        params: {
-            id: id,
-        },
-        headers: {
-            Authorization: `Bearer ${loginStore.getToken}`,
-        },
-    });
-
-    const quiz = (await response).data;
-    // set questions
-    questions.value = quiz.questions;
-
-    // set quizName
-    quizName.value = quiz.name;
 });
 </script>
 

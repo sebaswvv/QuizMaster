@@ -7,6 +7,12 @@ router
     .get(QuizController.getQuiz)
     .post(QuizController.addQuiz);
 
+// get for search quizzes
+router
+    .route('/search')
+    .get(QuizController.searchQuizzes);
+    
+
 // get all quizes for a user by user id
 router
     .route('/user')

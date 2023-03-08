@@ -2,6 +2,18 @@ import { QuizService } from "../services/quizservice";
 import { Request, Response } from "express";
 const jwt = require("jsonwebtoken");
 
+exports.searchQuizzes = async (req: Request, res: Response) => {
+    // TODO add pagination
+    const quizService = new QuizService();  
+    const quizzes = await quizService.searchQuizzes(req.query.search);
+    if (!quizzes) {
+        res.status(400).json({ message: 'Error searching quizzes' });
+        return;
+    }
+    // send the req.body back
+    res.status(200).json(quizzes);
+}
+
 exports.addQuiz = async (req: Request, res: Response) => {
     // get Bearer token from header
     if (!req.headers.authorization) {
@@ -61,7 +73,6 @@ exports.getAllQuizzesFromUser = async (req: Request, res: Response) => {
 }
 
 exports.getQuiz = async (req: Request, res: Response) => {
-    // TODO: get Bearer token from header
     const quizService = new QuizService();
 
     //console.log(req.query.id);
