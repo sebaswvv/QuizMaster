@@ -40,7 +40,7 @@ export const useQuizStore = defineStore({
 
             // send the quiz to the backend
             const response = await axios.post(
-                'http://localhost:3000/api/quizzes',
+                '/api/quizzes',
                 quizAsJson,
                 config
             )

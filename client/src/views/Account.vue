@@ -29,7 +29,7 @@ onMounted(async () => {
         return;
     }
     // get all quizzes from the user pass the bearer token from the login store
-    const response = axios.get('http://localhost:3000/api/quizzes/user', {
+    const response = axios.get('/api/quizzes/user', {
         headers: {
             Authorization: `Bearer ${loginStore.getToken}`,
         },
@@ -66,7 +66,7 @@ function handleLogout() {
                     <router-link :to="{ name: 'play', params: { id: quiz.id } }" class="btn btn-primary mx-1 mb-2">Speel
                         quiz</router-link>
                     <!-- <a href="#" class="btn btn-primary mx-1 mb-2">Pas deze quiz aan</a>
-                                                                                    <a href="#" class="btn btn-danger mx-1 mb-2">Verwijder deze quiz</a> -->
+                                                                                        <a href="#" class="btn btn-danger mx-1 mb-2">Verwijder deze quiz</a> -->
                 </div>
             </div>
         </div>

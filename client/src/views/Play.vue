@@ -46,7 +46,7 @@ function startGame() {
 onMounted(async () => {
     // get the quiz with that id as query param and pass the bearer token from the login store if it exists
     try {
-        const response = await axios.get(`http://localhost:3000/api/quizzes`, {
+        const response = await axios.get(`/api/quizzes`, {
             params: {
                 id,
             },

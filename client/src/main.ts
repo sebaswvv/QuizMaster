@@ -1,22 +1,12 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
 import {createPinia} from 'pinia'
+import axios from 'axios'
 import './style.css'
 import App from './App.vue'
-import Home from './views/Home.vue'
-import Login from './views/Login.vue'
-import Create from './views/Create.vue'
 import router from './router'
 
-// create router
-// const router = createRouter({
-//     history: createWebHistory(),
-//     routes: [
-//         { path: '/', component: Home },
-//         { path: '/login', component: Login },
-//         { path: '/create', component: Create },
-//     ],
-// })
+// set base url for axios
+axios.defaults.baseURL = 'http://localhost:3000'
 
 const app = createApp(App)
 const pinia = createPinia()

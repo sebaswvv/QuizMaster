@@ -20,7 +20,8 @@ export const useLoginStore = defineStore({
     actions: {
         async login(username: string, password: string) {
             try {
-                const response = await axios.post("http://localhost:3000/api/users/login", {
+              // use axios base url
+                const response = await axios.post("/api/users/login", {
                   username: username,
                   password: password,
                 });

@@ -17,7 +17,7 @@ async function handleSearchQuiz() {
     if (searchQuery.value === '') {
         return;
     }
-    const response = await axios.get('http://localhost:3000/api/quizzes/search', {
+    const response = await axios.get('/api/quizzes/search', {
         params: {
             search: searchQuery.value,
         },
