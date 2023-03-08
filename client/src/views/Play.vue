@@ -11,7 +11,6 @@ const loginStore = useLoginStore();
 // get params from the url
 const { id } = router.currentRoute.value.params;
 
-// FOR PLAYING A QUIZ ON SCREEN
 const quizName = ref('');
 const questions = ref([]);
 const started = ref(false);
@@ -84,7 +83,7 @@ onMounted(async () => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    padding-top: 10vh;
     height: 100vh;
     background-color: #F4F1DE;
 }
@@ -92,12 +91,11 @@ onMounted(async () => {
 h2 {
     font-size: 4rem;
     font-family: 'Fredoka One', cursive;
-    margin-bottom: 2rem;
+    /* margin-bottom: 2rem; */
     color: #000000;
 }
 
 .button {
-    /* center button */
     display: block;
     margin-left: auto;
     margin-right: auto;

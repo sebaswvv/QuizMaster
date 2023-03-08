@@ -1,53 +1,91 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-//import TimerSlider from '../components/TimerSlider.vue';
+import TimerSlider from '../components/TimerSlider.vue';
 const { question, round } = defineProps(['question', 'round']);
 
-// const timeToAnswer = question.time_to_answer;
-const timeToAnswerInSeconds = 2;
+// set time to answer in seconds
+const timeParts = question.time_to_answer.split(':');
+const timeToAnswerInSeconds = (+timeParts[0]) * 60 * 60 + (+timeParts[1]) * 60 + (+timeParts[2]);;
+
 const timeIsUp = ref(false);
 const correctAnswer = ref('');
 
-// on mounted, start the timer for 10 seconds
+// on mounted, start the timer
 onMounted(() => {
     // reset own variables and components
     timeIsUp.value = false;
     correctAnswer.value = '';
 
-    // log to console when time is 0
+    // set timer to show the correct answer
     setTimeout(() => {
-        console.log('time is up');
         timeIsUp.value = true;
 
         // show the correct answer
         question.options.forEach((option: any) => {
             if (option.is_correct) {
                 correctAnswer.value = option.text;
+                // style the correct option.id with a green background
+                const element = document.getElementById(option.id);
+                if (element) {
+                    element.style.backgroundColor = '#27f115';
+                }
             }
         });
-        // show a button to go to the next question
+
     }, timeToAnswerInSeconds * 1000);
 });
-
-
 </script>
 
 <template>
-    <!-- <TimerSlider :timeInSeconds="timeToAnswerInSeconds" /> -->
+    <TimerSlider :timeInSeconds="timeToAnswerInSeconds" />
     <div class="center">
-        <h2>Vraag {{ round + 1 }}</h2>
-        <h1>{{ question.text }}</h1>
-        <div v-for="option in question.options" :key="option.id">
-            <label :for="option.id">{{ option.text }}</label>
+        <h2>Vraag {{ round + 1 }}: {{ question.text }}</h2>
+        <div v-for="(option, index) in question.options" :key="option.id" :id="option.id" class="option-block">
+            <div class="option-letter">{{ String.fromCharCode(index + 65) }}.</div>
+            <div class="option-text">{{ option.text }}</div>
         </div>
-        <div>
-            <p v-if="timeIsUp">Het juiste antwoord is: {{ correctAnswer }}</p>
-            <button @click="$emit('nextQuestion')" class="button" v-if="timeIsUp">Volgende vraag</button>
+        <div v-if="timeIsUp">
+            <p class="correct-answer">Het juiste antwoord is: {{ correctAnswer }}</p>
+            <button @click="$emit('nextQuestion')" class="button">Volgende vraag</button>
         </div>
     </div>
 </template>
-
+  
 <style scoped>
+.correct-answer {
+    font-family: 'Fredoka One', cursive;
+    font-size: 25px;
+    margin-top: 10px;
+}
+
+h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+.option-block {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 3px;
+    background-color: #0D5D56;
+    padding: 10px;
+    box-sizing: border-box;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.option-letter {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.option-text {
+    margin: 0;
+}
+
 .center {
     display: flex;
     flex-direction: column;

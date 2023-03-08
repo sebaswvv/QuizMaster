@@ -1,11 +1,11 @@
 <template>
     <div class="slider" ref="slider"></div>
 </template>
-  
+
 <script setup lang="ts">
 import { ref, onMounted, watch, nextTick } from "vue";
 
-const timeInSeconds = ref(10);
+const { timeInSeconds } = defineProps(['timeInSeconds']);
 
 const slider = ref<HTMLElement | null>(null);
 let timerId: ReturnType<typeof setInterval> | null = null;
@@ -22,13 +22,16 @@ onMounted(async () => {
     timerId = setInterval(() => {
         const currentTime = new Date().getTime();
         elapsedTime = currentTime - startTime;
-        elapsedWidth = totalWidth * (elapsedTime / (timeInSeconds.value * 1000));
+        elapsedWidth = totalWidth * (elapsedTime / (timeInSeconds * 1000));
+        if (elapsedTime >= timeInSeconds * 1000) {
+            clearInterval(timerId!);
+        }
         slider.value!.style.width = `${elapsedWidth}px`;
-    }, 100);
+    }, 10);
 
 });
 
-watch(timeInSeconds, (newValue, oldValue) => {
+watch(timeInSeconds, (newValue: any, oldValue) => {
     clearInterval(timerId!);
     slider.value!.style.width = '0px';
     elapsedTime = 0;
@@ -38,17 +41,22 @@ watch(timeInSeconds, (newValue, oldValue) => {
         const currentTime = new Date().getTime();
         elapsedTime = currentTime - startTime;
         elapsedWidth = totalWidth * (elapsedTime / (newValue * 1000));
+        if (elapsedTime >= newValue * 1000) {
+            clearInterval(timerId!);
+        }
         slider.value!.style.width = `${elapsedWidth}px`;
-    }, 100);
+    }, 10);
 });
 </script>
-  
+
 <style scoped>
 .slider {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 10px;
-    background-color: #ccc;
+    background-color: #0D5D56;
     border-radius: 5px;
 }
 </style>
-  
