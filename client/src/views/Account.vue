@@ -1,27 +1,3 @@
-<template>
-    <div class="container-fluid heading">
-        <HomeIcon />
-        <h2 class="text-center">Welkom sebas {{ userName }}</h2>
-        <p class="header-text text-center">Hier kan je je eigen quizzes inzien, aanpassen en spelen!</p>
-    </div>
-
-    <img :src="imageSrc" alt="Image">
-    <div class="container">
-        <div class="row">
-            <div v-for="quiz in quizzes" class="mx-2 card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ quiz.name }}</h5>
-                    <p class="card-text">Vragen: {{ quiz.questions.length }}</p>
-                    <p class="cart-text">Opebaar: {{ quiz.public }}</p>
-                    <a href="#" class="btn btn-primary mx-1 mb-2">Speel quiz</a>
-                    <a href="#" class="btn btn-primary mx-1 mb-2">Pas deze quiz aan</a>
-                    <a href="#" class="btn btn-danger mx-1 mb-2">Verwijder deze quiz</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
-
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useLoginStore } from '../stores/useLogin';
@@ -58,9 +34,36 @@ onMounted(async () => {
     });
     // add the quizzes to the quizzes array
     quizzes.value = (await response).data;
-    imageSrc.value = 'data:image/jpeg;base64,' + quizzes.value[0].questions[0].image;
+    // const image = quizzes.value[0].questions[0].image;
+    // // add base64 string to the imageSrc
+    // imageSrc.value = 'data:image/jpeg;base64,' + image;
 });
 </script>
+
+<template>
+    <div class="container-fluid heading">
+        <HomeIcon />
+        <h2 class="text-center">Welkom {{ userName }}</h2>
+        <p class="header-text text-center">Hier kan je je eigen quizzes inzien, aanpassen en spelen!</p>
+    </div>
+
+    <!-- <img :src="imageSrc" alt="Image"> -->
+    <div class="container">
+        <div class="row">
+            <div v-for="quiz in quizzes" class="mx-2 card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ quiz.name }}</h5>
+                    <p class="card-text">Vragen: {{ quiz.questions.length }}</p>
+                    <p class="cart-text">Opebaar: {{ quiz.public }}</p>
+                    <router-link :to="{ name: 'play', params: { id: quiz.id } }" class="btn btn-primary mx-1 mb-2">Speel
+                        quiz</router-link>
+                    <!-- <a href="#" class="btn btn-primary mx-1 mb-2">Pas deze quiz aan</a>
+                                <a href="#" class="btn btn-danger mx-1 mb-2">Verwijder deze quiz</a> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
 
 <style scoped>
 h2 {

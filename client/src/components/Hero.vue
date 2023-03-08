@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useLoginStore } from "../stores/useLogin";
 import { useQuizStore } from "../stores/useQuiz";
 
@@ -7,6 +8,9 @@ import HomeIcon from "./HomeIcon.vue";
 
 const loginStore = useLoginStore();
 const quizStore = useQuizStore();
+
+// set redirect for when user logs in
+loginStore.redirect = "/account";
 
 function handleLogout() {
   loginStore.logout();
@@ -17,7 +21,7 @@ function handleLogout() {
 <template>
   <div class="hero-section">
     <home-icon />
-    <account-icon />
+    <account-icon/>
     <a class="top-right" @click="handleLogout">Log uit</a>
     <h1 class="text-center">Maak en speel je eigen pubquiz!</h1>
     <h2 class="text-center">QuizMaster</h2>
@@ -25,7 +29,7 @@ function handleLogout() {
       <router-link to="/create">
         <button class="button mx-2">Maak je eigen quiz</button>
       </router-link>
-      <router-link to="/play">
+      <router-link to="/choose">
         <button class="button mx-2">Speel een quiz</button>
       </router-link>
     </div>

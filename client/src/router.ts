@@ -4,8 +4,9 @@ import Login from './views/Login.vue'
 import Regsister from './views/Register.vue'
 import Create from './views/Create.vue'
 import NotFound from './views/NotFound.vue'
-import Play from './views/Play.vue'
+import Choose from './views/Choose.vue'
 import Account from './views/Account.vue'
+import Play from './views/Play.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -15,7 +16,9 @@ const router = createRouter({
         { path: '/account', component: Account},
         { path: '/create', component: Create },
         { path: '/register', component: Regsister },
-        { path: '/play', component: Play },
+        { path: '/choose', component: Choose },
+        // to play with id parameter
+        { path: '/play/:id', component: Play, name: 'play' },
         { path: '/:notFound(.*)', component: NotFound },
     ],
 })

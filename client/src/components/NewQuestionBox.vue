@@ -6,14 +6,17 @@ const { question } = defineProps(["question"]);
 function handleFileUpload(event: any) {
   let file = event.target.files[0];
   // check if file is not larger than 1MB
-  if (file.size > 1000000) {
-    alert("Afbeelding is te groot, maximaal 1MB");
-    return;
-  }
+
 
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = () => {
+    // check file size
+    if (file.size > 1000000) {
+      alert("Afbeelding is te groot, maximaal 1MB");
+      return;
+    }
+
     // set the image to the question
     question.image = reader.result;
   };

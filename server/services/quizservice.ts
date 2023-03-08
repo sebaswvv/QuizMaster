@@ -30,11 +30,6 @@ class QuizService {
             // time is in seconds parse to mySQL format and parse to number using moment
             question.timeToAnswer = moment.utc(question.timeToAnswer * 1000).format('HH:mm:ss');
 
-            // set question image to base64 if it exists
-            if (question.image) {
-                question.image = question.image.replace(/^data:image\/[a-z]+;base64,/, "");
-            }
-            
             // check if each option has text and isCorrect !== undefined
             for (let j = 0; j < question.options.length; j++) {
                 const option = question.options[j];

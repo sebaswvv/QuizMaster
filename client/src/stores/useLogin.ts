@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia'
 import axios from 'axios'
+import router from '../router';
 
 export const useLoginStore = defineStore({
     id: 'login',
@@ -8,6 +9,7 @@ export const useLoginStore = defineStore({
         username: '',
         id: 0,
         token: '',
+        redirect: '',
     }),
     getters: {
         isLoggedIn: (state) => state.loggedIn,
@@ -30,6 +32,12 @@ export const useLoginStore = defineStore({
                   this.username = username;
                   this.id = response.data.userId;
                   this.token = response.data.token;
+                  // check if the redirect is not empty
+                  if (this.redirect !== '') {
+                    // redirect to the redirect
+                    router.push(this.redirect);
+                    this.redirect = '';
+                  }
                   return true;
                 }
               } catch (error: any) {

@@ -30,13 +30,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-
 import { useLoginStore } from '../stores/useLogin';
 import router from '../router';
 import LoginModal from './LoginModal.vue';
 
 const loginStore = useLoginStore();
-
 const modalIsOpen = ref(false);
 
 function openAccountPage() {
