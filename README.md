@@ -19,5 +19,15 @@ TRUNCATE questions;
 TRUNCATE quizzes;  
 
 ## TODO:
-[] - 
+[] - Add search function to /choose page
+[] - Update an entire quiz  
+[] - delete an entire quiz  
+[] - Upload and display an image  
+[] - style the login modal  
+[] - style register page  
+[] - Show the username of the person that made a public quiz      
+[] - add some information on the homepage of the website  
+[] - change username and email
+
+[] - implement socket.io to play a quiz  
  

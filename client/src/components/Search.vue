@@ -50,7 +50,7 @@ function handlePlayQuiz(id: number) {
                 </div>
                 <div v-else class="list-group">
                     <a @click="handlePlayQuiz(quiz.id)" v-for="quiz in searchedQuizzes" :key="quiz.id"
-                        class="list-group-item">
+                        class="mt-3 list-group-item">
                         {{ quiz.name }}
                     </a>
                 </div>
