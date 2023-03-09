@@ -22,18 +22,17 @@ TRUNCATE questions;
 TRUNCATE quizzes;  
 
 ## TODO:
-[] - when fetching quiz, remove _ and replace with camelCasing. Also do this in de client  
-[] - Add public/private slider  
+[x] - Add public/private slider  
+[] - check each api call on client side for erros  
 [] - delete an entire quiz  
 [] - Update an entire quiz  
 [] - Add search function to /choose page  
-[] - Upload and display an image  
-[] - change username and email    
 [] - style the login modal  
 [] - style register page  
 [] - Show the username of the person that made a public quiz     
 [] - add some information on the homepage of the website   
 [] - update audience and issuer to work on remote  
+[] - change username and email    
 
 [] - implement socket.io to play a quiz  
  
