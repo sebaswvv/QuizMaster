@@ -23,9 +23,9 @@ TRUNCATE quizzes;
 
 ## TODO:
 [x] - Add public/private slider  
-[] - check each api call on client side for erros  
-[] - delete an entire quiz  
+[x] - delete an entire quiz  
 [] - Update an entire quiz  
+[] - check each api call on client side for erros  
 [] - Add search function to /choose page  
 [] - style the login modal  
 [] - style register page  
