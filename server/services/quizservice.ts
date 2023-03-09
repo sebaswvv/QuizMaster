@@ -47,7 +47,7 @@ class QuizService {
         const quiz = new Quiz(
             rawQuiz.name,
             rawQuiz.userId,
-            rawQuiz.isPublic,
+            rawQuiz.public,
             rawQuiz.questions,
             rawQuiz.id
         );
@@ -68,7 +68,7 @@ class QuizService {
 
     async addQuiz(rawQuiz: any) {
         // check if all required fields are present
-        if (!rawQuiz.name || !rawQuiz.userId || rawQuiz.isPublic === undefined || !rawQuiz.questions) {
+        if (!rawQuiz.name || !rawQuiz.userId || rawQuiz.public === undefined || !rawQuiz.questions) {
             return false;
         }      
 

@@ -32,8 +32,8 @@ class QuizRepository extends Repository {
                 await this.knex.raw('SET FOREIGN_KEY_CHECKS = 0');
 
                 // delete all questions and options for the quiz
-                await this.knex('options').where('question_id', quiz.id).del();
-                await this.knex('questions').where('quiz_id', quiz.id).del();
+                await this.knex('options').where('questionId', quiz.id).del();
+                await this.knex('questions').where('quizId', quiz.id).del();
 
                 // enable foreign key checks
                 await this.knex.raw('SET FOREIGN_KEY_CHECKS = 1');
@@ -44,9 +44,9 @@ class QuizRepository extends Repository {
                     // insert question into questions table
                     await this.knex('questions').insert({
                         text: question.text,
-                        quiz_id: quiz.id,
+                        quizId: quiz.id,
                         image: question.image,
-                        time_to_answer: question.timeToAnswer
+                        timeToAnswer: question.timeToAnswer
                     });
 
                     // get the questionId of the inserted question
@@ -56,8 +56,8 @@ class QuizRepository extends Repository {
                     for (const option of question.options) {
                         await this.knex('options').insert({
                             text: option.text,
-                            is_correct: option.isCorrect,
-                            question_id: questionId.id
+                            isCorrect: option.isCorrect,
+                            questionId: questionId.id
                         });
                     }
                 }
@@ -76,36 +76,36 @@ class QuizRepository extends Repository {
     async addQuiz(quiz: Quiz) {
         try{
             // insert into quizzes name, userId, isPublic
-        await this.knex('quizzes').insert({
-            name: quiz.name,
-            user_id: quiz.userId,
-            public: quiz.isPublic
-        });
-    
-        // get quizId
-        const quizId = await this.knex('quizzes').max('id as id').first();
-        
-        // loop through questions and insert each question and options
-        for (const question of quiz.questions) {
-            // insert question into questions table
-            await this.knex('questions').insert({
-                text: question.text,
-                quiz_id: quizId.id,
-                image: question.image,
-                time_to_answer: question.timeToAnswer
+            await this.knex('quizzes').insert({
+                name: quiz.name,
+                userId: quiz.userId,
+                public: quiz.isPublic
             });
-    
-            // get the questionId of the inserted question
-            const questionId = await this.knex('questions').max('id as id').first();
-    
-            // insert options for the current question
-            for (const option of question.options) {
-                await this.knex('options').insert({
-                    text: option.text,
-                    is_correct: option.isCorrect,
-                    question_id: questionId.id
+        
+            // get quizId
+            const quizId = await this.knex('quizzes').max('id as id').first();
+            
+            // loop through questions and insert each question and options
+            for (const question of quiz.questions) {
+                // insert question into questions table
+                await this.knex('questions').insert({
+                    text: question.text,
+                    quizId: quizId.id,
+                    image: question.image,
+                    timeToAnswer: question.timeToAnswer
                 });
-            }
+        
+                // get the questionId of the inserted question
+                const questionId = await this.knex('questions').max('id as id').first();
+        
+                // insert options for the current question
+                for (const option of question.options) {
+                    await this.knex('options').insert({
+                        text: option.text,
+                        isCorrect: option.isCorrect,
+                        questionId: questionId.id
+                    });
+                }
         }
         } catch (error) {
             console.log(error);
@@ -135,7 +135,7 @@ class QuizRepository extends Repository {
             quiz.public = isPublic;
 
             // get questions
-            const questions = await this.knex('questions').where('quiz_id', id);
+            const questions = await this.knex('questions').where('quizId', id);
 
             // for each question parse the image to string
             for (const question of questions) {
@@ -147,12 +147,12 @@ class QuizRepository extends Repository {
             
             // foreach question get options
             for (const question of questions) {
-                const options = await this.knex('options').where('question_id', question.id);
+                const options = await this.knex('options').where('questionId', question.id);
                  
                 for (const option of options) {
                     // parse Buffer to boolean
-                    const isCorrect = !!option.is_correct.readInt8(0);
-                    option.is_correct = isCorrect;
+                    const isCorrect = !!option.isCorrect.readInt8(0);
+                    option.isCorrect = isCorrect;
                 }
                 question.options = options;
             }
@@ -167,7 +167,7 @@ class QuizRepository extends Repository {
 
     async getAllQuizzesFromUser(userId: number) {
         // get all quiz ids from user
-        const quizIds = await this.knex('quizzes').where('user_id', userId).select('id');
+        const quizIds = await this.knex('quizzes').where('userId', userId).select('id');
         const quizzes = [];
         for (const quizId of quizIds) {
             const quiz = await this.getQuiz(quizId.id);
