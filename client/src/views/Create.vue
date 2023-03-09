@@ -18,6 +18,10 @@ const errorMessage = ref("");
 
 const modalIsOpen = ref(false);
 
+function handleSetPublic() {
+  quizStore.togglePublic();
+}
+
 function publishQuiz() {
   // check if each question has a question, answers and at least one correct answer
   let hasError = false;
@@ -119,8 +123,14 @@ window.addEventListener('click', (e: MouseEvent) => {
             v-model="quizStore.quiz.name" />
           <p>Voeg een vraag toe; geef de vraag een naam, antwoorden en vink het juiste antwoord aan.</p>
         </div>
+        <p id="private-text">Maak je quiz publiekelijk beschikbaar?</p>
+        <label class="switch">
+          <input @change="handleSetPublic" type="checkbox">
+          <span class="slider round"></span>
+        </label>
       </div>
     </div>
+
     <!-- foreach question a new question box execpt the first one -->
     <div v-for="(question, index) in questions" :key="index">
       <NewQuestionBox :question="question" @remove-question="removeQuestion" />
@@ -131,15 +141,10 @@ window.addEventListener('click', (e: MouseEvent) => {
       Voeg een vraag toe
     </button>
 
-    <!-- toggle for private or public -->
-    <label class="switch">
-      <input type="checkbox">
-      <span class="slider round"></span>
-    </label>
-
     <button v-if="quizStore.quiz.questions.length > 0" class="button mb-3" @click="publishQuiz">
       Publiceer Quiz
     </button>
+
     <p class="fault">{{ errorMessage }}</p>
   </div>
   <LoginModal v-if="modalIsOpen" @close="modalIsOpen = false" />
@@ -148,6 +153,10 @@ window.addEventListener('click', (e: MouseEvent) => {
 
   
 <style scoped>
+#private-text {
+  margin-bottom: 5px;
+}
+
 .switch {
   position: relative;
   display: inline-block;
@@ -199,7 +208,6 @@ input:checked+.slider:before {
   transform: translateX(26px);
 }
 
-/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }

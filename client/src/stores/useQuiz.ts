@@ -25,6 +25,9 @@ export const useQuizStore = defineStore({
         getQuiz: (state) => state.quiz,
     },
     actions: {
+        togglePublic() {
+            this.quiz.public = !this.quiz.public;
+        },
         setUserId() {
             this.quiz.userId = useLoginStore().getId;
         },

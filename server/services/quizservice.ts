@@ -86,7 +86,7 @@ class QuizService {
         const quiz = new Quiz(
             rawQuiz.name,
             rawQuiz.userId,
-            rawQuiz.isPublic,
+            rawQuiz.public,
             rawQuiz.questions,   
             undefined
         );        
