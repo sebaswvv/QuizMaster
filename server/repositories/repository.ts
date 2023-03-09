@@ -1,3 +1,4 @@
+require('dotenv').config();
 class Repository {
     knex: any;
     constructor() {

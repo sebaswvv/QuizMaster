@@ -22,17 +22,18 @@ TRUNCATE questions;
 TRUNCATE quizzes;  
 
 ## TODO:
-[] - fix bug that says not all fields are filled in, but they are. Maby a space?  
-[] - update audience and issuer to work on remote
-[] - Add search function to /choose page
-[] - Update an entire quiz  
+[] - when fetching quiz, remove _ and replace with camelCasing. Also do this in de client  
+[] - Add public/private slider  
 [] - delete an entire quiz  
+[] - Update an entire quiz  
+[] - Add search function to /choose page  
 [] - Upload and display an image  
+[] - change username and email    
 [] - style the login modal  
 [] - style register page  
 [] - Show the username of the person that made a public quiz     
 [] - add some information on the homepage of the website   
-[] - change username and email    
+[] - update audience and issuer to work on remote  
 
 [] - implement socket.io to play a quiz  
  

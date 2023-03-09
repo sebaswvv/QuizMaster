@@ -18,6 +18,61 @@ class QuizRepository extends Repository {
         }        
     }
 
+    async editQuiz(quiz: Quiz) {
+        try {
+            // start transaction
+            await this.knex.transaction(async (trx: any) => {
+                // update quiz name, isPublic
+                await this.knex('quizzes').where('id', quiz.id).update({
+                    name: quiz.name,
+                    public: quiz.isPublic
+                });
+
+                // ingnore foreign key checks
+                await this.knex.raw('SET FOREIGN_KEY_CHECKS = 0');
+
+                // delete all questions and options for the quiz
+                await this.knex('options').where('question_id', quiz.id).del();
+                await this.knex('questions').where('quiz_id', quiz.id).del();
+
+                // enable foreign key checks
+                await this.knex.raw('SET FOREIGN_KEY_CHECKS = 1');
+
+                // loop through questions and insert each question and options
+                for (const question of quiz.questions) {
+                    // const timeToAnswer = moment.utc(question.timeToAnswer * 1000).format('HH:mm:ss');
+                    // insert question into questions table
+                    await this.knex('questions').insert({
+                        text: question.text,
+                        quiz_id: quiz.id,
+                        image: question.image,
+                        time_to_answer: question.timeToAnswer
+                    });
+
+                    // get the questionId of the inserted question
+                    const questionId = await this.knex('questions').max('id as id').first();
+
+                    // insert options for the current question
+                    for (const option of question.options) {
+                        await this.knex('options').insert({
+                            text: option.text,
+                            is_correct: option.isCorrect,
+                            question_id: questionId.id
+                        });
+                    }
+                }
+                // commit transaction
+                await trx.commit();
+        });
+
+
+            // return true if everything went well
+            return true;
+        } catch (error) {
+            console.log(error);
+        }
+    }         
+
     async addQuiz(quiz: Quiz) {
         try{
             // insert into quizzes name, userId, isPublic

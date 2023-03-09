@@ -5,7 +5,8 @@ const QuizController = require('../controllers/quizcontroller');
 router
     .route('/')
     .get(QuizController.getQuiz)
-    .post(QuizController.addQuiz);
+    .post(QuizController.addQuiz)
+    .put(QuizController.editQuiz);
 
 // get for search quizzes
 router
