@@ -6,7 +6,8 @@ router
     .route('/')
     .get(QuizController.getQuiz)
     .post(QuizController.addQuiz)
-    .put(QuizController.editQuiz);
+    .put(QuizController.editQuiz)
+    .delete(QuizController.deleteQuiz);
 
 // get for search quizzes
 router

@@ -4,21 +4,18 @@ import { ref } from 'vue';
 const { question } = defineProps(["question"]);
 
 function handleFileUpload(event: any) {
-  let file = event.target.files[0];
+  const file = event.target.files[0];
   // check if file is not larger than 1MB
-
-
   const reader = new FileReader();
   reader.readAsDataURL(file);
-  reader.onload = () => {
+  reader.onload = (e) => {
     // check file size
     if (file.size > 1000000) {
       alert("Afbeelding is te groot, maximaal 1MB");
       return;
     }
-
     // set the image to the question
-    question.image = reader.result;
+    question.image = e.target?.result;
   };
 }
 </script>
@@ -61,7 +58,7 @@ function handleFileUpload(event: any) {
             <p>Optioneel; Voeg een afbeelding toe:</p>
           </div>
           <div class="custom-file">
-            <input @change="handleFileUpload" type="file" class="custom-file-input" id="inputGroupFile01"
+            <input @change="handleFileUpload" accept="image/*" type="file" class="custom-file-input" id="inputGroupFile01"
               aria-describedby="inputGroupFileAddon01">
             <label class="custom-file-label" for="inputGroupFile01">Kies afbeelding</label>
           </div>

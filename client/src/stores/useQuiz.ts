@@ -6,7 +6,7 @@ interface Quiz {
     id: number;
     name: string;
     userId: number;
-    isPublic: boolean;
+    public: boolean;
     questions: Array<any>; // define the type of the questions array
 }
 
@@ -16,7 +16,7 @@ export const useQuizStore = defineStore({
         quiz: {
           id: 0,
           name: '',
-          isPublic: false,
+          public: false,
           userId: 0,
           questions: [],
         },
@@ -44,14 +44,13 @@ export const useQuizStore = defineStore({
                 quizAsJson,
                 config
             )
-            console.log(response);
         },
 
         resetQuiz() {
             this.quiz = {
                 id: 0,
                 name: '',
-                isPublic: false,
+                public: false,
                 userId: 0,
                 questions: [],
             }

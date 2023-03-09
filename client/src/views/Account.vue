@@ -36,9 +36,7 @@ onMounted(async () => {
     });
     // add the quizzes to the quizzes array
     quizzes.value = (await response).data;
-    // const image = quizzes.value[0].questions[0].image;
-    // // add base64 string to the imageSrc
-    // imageSrc.value = 'data:image/jpeg;base64,' + image;
+    // imageSrc.value = quizzes.value[0].questions[0].image;
 });
 function handleLogout() {
     loginStore.logout();
@@ -66,7 +64,7 @@ function handleLogout() {
                     <router-link :to="{ name: 'play', params: { id: quiz.id } }" class="btn btn-primary mx-1 mb-2">Speel
                         quiz</router-link>
                     <!-- <a href="#" class="btn btn-primary mx-1 mb-2">Pas deze quiz aan</a>
-                                                                                        <a href="#" class="btn btn-danger mx-1 mb-2">Verwijder deze quiz</a> -->
+                                                                                                                                            <a href="#" class="btn btn-danger mx-1 mb-2">Verwijder deze quiz</a> -->
                 </div>
             </div>
         </div>

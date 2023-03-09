@@ -5,6 +5,29 @@ class QuizRepository extends Repository {
         super();
     }
 
+    async deleteQuiz(id: any) {
+        try {
+            // start transaction
+            await this.knex.transaction(async (trx: any) => {
+                // delete all options for the quiz
+                await this.knex('options').where('questionId', id).del();
+
+                // delete all questions for the quiz
+                await this.knex('questions').where('quizId', id).del();
+
+                // delete the quiz
+                await this.knex('quizzes').where('id', id).del();
+
+                // commit transaction
+                await trx.commit();
+            });
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
     async searchQuizzes(search: any) {
         try {
             // search only public quizzes with name like search

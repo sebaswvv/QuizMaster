@@ -66,6 +66,16 @@ class QuizService {
         }
     }
 
+    async deleteQuiz(id: any) {
+        try {
+            await this.quizRepository.deleteQuiz(id);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+
     async addQuiz(rawQuiz: any) {
         // check if all required fields are present
         if (!rawQuiz.name || !rawQuiz.userId || rawQuiz.public === undefined || !rawQuiz.questions) {

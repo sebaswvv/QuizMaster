@@ -62,6 +62,38 @@ exports.searchQuizzes = async (req: Request, res: Response) => {
     res.status(200).json(quizzes);
 }
 
+exports.deleteQuiz = async (req: Request, res: Response) => {
+    // check if the user is the owner of the quiz
+    const userId = verifyOwnerOfQuiz(req);
+    if (!userId) {
+        res.status(401).json({ message: 'Invalid token' });
+        return;
+    }
+
+    // check if there is a quiz with the id from the param
+    const quizFromDb = await quizService.getQuiz(req.query.id);
+    if (!quizFromDb) {
+        res.status(400).json({ message: 'Quiz not found' });
+        return;
+    }
+    //verify that there is a quiz with the id from the param and that the user is the owner
+    if (quizFromDb.userId !== userId) {
+        res.status(401).json({ message: 'Unautherized' });
+        return;
+    }
+
+    
+    const deletedQuiz = await quizService.deleteQuiz(req.query.id);
+    if (!deletedQuiz) {
+        res.status(400).json({ message: 'Error deleting quiz' });
+        return;
+    }
+    // send the req.body back and a message that the quiz was updated
+    res.status(200).json({
+        message: 'Quiz deleted',
+    });
+}
+
 exports.addQuiz = async (req: Request, res: Response) => {
     // get Bearer token from header
     if (!req.headers.authorization) {
