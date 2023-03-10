@@ -96,7 +96,7 @@ async function handleQuizDelete(quizId: number) {
                     </a>
 
                     <!-- <a href="#" class="btn btn-primary mx-1 mb-2">Pas deze quiz aan</a>
-                                                                                                                                                                                                                                            <a href="#" class="btn btn-danger mx-1 mb-2">Verwijder deze quiz</a> -->
+                                                                                                                                                                                                                                                            <a href="#" class="btn btn-danger mx-1 mb-2">Verwijder deze quiz</a> -->
                 </div>
             </div>
         </div>

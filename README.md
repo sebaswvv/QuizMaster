@@ -20,6 +20,10 @@ To start this application run:
 TRUNCATE options;  
 TRUNCATE questions;  
 TRUNCATE quizzes;  
+[] - POST /register niet nodig gewoon POST naar /users en dan in de controller kijken of er user data word meegegeven, dit betekent dat er gereigsteerd word  
+[] - Wel echt /1 doen ipv query param  
+[] - Search doen op /quizzes en dan search param meegeven en dit checken in de controller  
+
 
 ## TODO:
 [x] - Add public/private slider  
