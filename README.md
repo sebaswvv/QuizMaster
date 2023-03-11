@@ -24,9 +24,9 @@ TRUNCATE quizzes;
 ## TODO:
 [x] - Add public/private slider  
 [x] - delete an entire quiz  
-[] - Wel echt /1 doen ipv query param  
-[] - Search doen op /quizzes en dan search param meegeven en dit checken in de controller  
-[] - Update an entire quiz  
+[x] - Wel echt /1 doen ipv query param  
+[x] - Search doen op /quizzes en dan search param meegeven en dit checken in de controller  
+[] - Update an entire quiz client side  
 [] - check each api call on client side for erros  
 [] - Add search function to /choose page  
 [] - style the login modal  

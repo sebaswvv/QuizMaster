@@ -29,7 +29,8 @@ exports.editQuiz = async (req: Request, res: Response) => {
     }
 
     // check if there is a quiz with the id from the param
-    const quizFromDb = await quizService.getQuiz(req.query.id);
+    const quizFromDb = await quizService.getQuiz(req.params.id);
+    const quizId = req.params.id;
     if (!quizFromDb) {
         res.status(400).json({ message: 'Quiz not found' });
         return;
@@ -39,7 +40,7 @@ exports.editQuiz = async (req: Request, res: Response) => {
         res.status(401).json({ message: 'Unautherized' });
         return;
     }
-    const updatedQuiz = await quizService.editQuiz(req.body);
+    const updatedQuiz = await quizService.editQuiz(req.body, quizId);
     if (!updatedQuiz) {
         res.status(400).json({ message: 'Error updating quiz' });
         return;
@@ -71,7 +72,7 @@ exports.deleteQuiz = async (req: Request, res: Response) => {
     }
 
     // check if there is a quiz with the id from the param
-    const quizFromDb = await quizService.getQuiz(req.query.id);
+    const quizFromDb = await quizService.getQuiz(req.params.id);
     if (!quizFromDb) {
         res.status(400).json({ message: 'Quiz not found' });
         return;
@@ -83,7 +84,7 @@ exports.deleteQuiz = async (req: Request, res: Response) => {
     }
 
     
-    const deletedQuiz = await quizService.deleteQuiz(req.query.id);
+    const deletedQuiz = await quizService.deleteQuiz(req.params.id);
     if (!deletedQuiz) {
         res.status(400).json({ message: 'Error deleting quiz' });
         return;
@@ -143,7 +144,7 @@ exports.getAllQuizzesFromUser = async (req: Request, res: Response) => {
 exports.getQuiz = async (req: Request, res: Response) => {
     const quizService = new QuizService();
 
-    const quiz = await quizService.getQuiz(req.query.id);
+    const quiz = await quizService.getQuiz(req.params.id);
     if (!quiz) {
         res.status(400).json({ message: 'That quiz does not exist' });
         return;

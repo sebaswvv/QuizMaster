@@ -1,19 +1,25 @@
 import express from 'express';
+import { Request, Response } from "express";
 const router = express.Router();
 const QuizController = require('../controllers/quizcontroller');
 
+
+function routeGet (req: Request, res: Response) {
+    // check if there is a search query
+    if (req.query.search) {
+        QuizController.searchQuizzes(req, res);
+    }
+    else {
+        QuizController.getQuiz(req, res);
+    }
+}
+
 router
-    .route('/')
-    .get(QuizController.getQuiz)
+    .route('/:id?')
+    .get(routeGet)
     .post(QuizController.addQuiz)
     .put(QuizController.editQuiz)
-    .delete(QuizController.deleteQuiz);
-
-// get for search quizzes
-router
-    .route('/search')
-    .get(QuizController.searchQuizzes);
-    
+    .delete(QuizController.deleteQuiz);    
 
 // get all quizes for a user by user id
 router

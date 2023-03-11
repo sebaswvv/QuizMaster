@@ -9,6 +9,9 @@ class QuizRepository extends Repository {
         try {
             // start transaction
             await this.knex.transaction(async (trx: any) => {
+                // disable foreign key checks
+                await this.knex.raw('SET FOREIGN_KEY_CHECKS = 0');
+                
                 // delete all options for the quiz
                 await this.knex('options').where('questionId', id).del();
 
@@ -17,6 +20,9 @@ class QuizRepository extends Repository {
 
                 // delete the quiz
                 await this.knex('quizzes').where('id', id).del();
+
+                // enable foreign key checks
+                await this.knex.raw('SET FOREIGN_KEY_CHECKS = 1');
 
                 // commit transaction
                 await trx.commit();

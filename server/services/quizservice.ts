@@ -37,7 +37,7 @@ class QuizService {
         return true;       
     }
 
-    async editQuiz(rawQuiz: any) {
+    async editQuiz(rawQuiz: any, quizId: any) {
         // check if all required fields are present
         if (!rawQuiz.name || !rawQuiz.userId || rawQuiz.public === undefined || !rawQuiz.questions) {
             return false;
@@ -49,7 +49,7 @@ class QuizService {
             rawQuiz.userId,
             rawQuiz.public,
             rawQuiz.questions,
-            rawQuiz.id
+            quizId
         );
 
         if (!this.verifyQuiz(quiz)) {
