@@ -26,6 +26,7 @@ TRUNCATE quizzes;
 [x] - delete an entire quiz  
 [x] - Wel echt /1 doen ipv query param  
 [x] - Search doen op /quizzes en dan search param meegeven en dit checken in de controller  
+[] - fix broken endpoints client side  
 [] - Update an entire quiz client side  
 [] - check each api call on client side for erros  
 [] - Add search function to /choose page  
