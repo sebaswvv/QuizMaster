@@ -19,15 +19,14 @@ To start this application run:
 ## Notes:
 TRUNCATE options;  
 TRUNCATE questions;  
-TRUNCATE quizzes;  
-[] - POST /register niet nodig gewoon POST naar /users en dan in de controller kijken of er user data word meegegeven, dit betekent dat er gereigsteerd word  
-[] - Wel echt /1 doen ipv query param  
-[] - Search doen op /quizzes en dan search param meegeven en dit checken in de controller  
-
+TRUNCATE quizzes; 
 
 ## TODO:
 [x] - Add public/private slider  
 [x] - delete an entire quiz  
+[] - POST /register niet nodig gewoon POST naar /users en dan in de controller kijken of er user data word meegegeven, dit betekent dat er gereigsteerd word  
+[] - Wel echt /1 doen ipv query param  
+[] - Search doen op /quizzes en dan search param meegeven en dit checken in de controller  
 [] - Update an entire quiz  
 [] - check each api call on client side for erros  
 [] - Add search function to /choose page  
