@@ -1,7 +1,8 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
-
+import http from 'http';
+import { Socket } from 'socket.io';
 const cors = require('cors');
 
 const QuizRouter = require('./routes/quizroute');
@@ -25,7 +26,27 @@ app.use(cors());
 app.use('/api/users', UserRouter);
 app.use('/api/quizzes', QuizRouter);
 
-app.listen(port, () => {
+// create http server
+const server = http.createServer(app);
+
+// initialize socket.io
+const io = require('socket.io')(server, {
+    cors: {
+        origin: '*',
+    },
+});
+
+// handle socket connections
+io.on('connection', (socket: Socket) => {
+    console.log(`A new socket connection has been established with id: ${socket.id}`);
+
+    socket.on('message', (msg: string) => {
+        console.log(msg);
+        io.emit('message', msg);
+    });
+});
+
+// start server
+server.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-    //console.log(encryptPassword("admin"));
 });
