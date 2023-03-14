@@ -14,6 +14,11 @@ function routeGet (req: Request, res: Response) {
     }
 }
 
+// get all quizes for a user by user id
+router
+    .route('/user')
+    .get(QuizController.getAllQuizzesFromUser);
+
 router
     .route('/:id?')
     .get(routeGet)
@@ -21,9 +26,8 @@ router
     .put(QuizController.editQuiz)
     .delete(QuizController.deleteQuiz);    
 
-// get all quizes for a user by user id
-router
-    .route('/user')
-    .get(QuizController.getAllQuizzesFromUser);
+
+
+
     
 module.exports = router;

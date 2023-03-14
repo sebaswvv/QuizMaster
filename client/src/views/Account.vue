@@ -32,7 +32,7 @@ onMounted(async () => {
     const response = axios.get('/api/quizzes/user', {
         headers: {
             Authorization: `Bearer ${loginStore.getToken}`,
-        },
+        },  
     });
     // add the quizzes to the quizzes array
     quizzes.value = (await response).data;
@@ -45,10 +45,7 @@ function handleLogout() {
 }
 
 async function handleQuizDelete(quizId: number) {
-    const respone = await axios.delete('/api/quizzes', {
-        params: {
-            id: quizId,
-        },
+    const respone = await axios.delete(`/api/quizzes/${quizId}`, {
         headers: {
             Authorization: `Bearer ${loginStore.getToken}`,
         },

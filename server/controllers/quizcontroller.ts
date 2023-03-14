@@ -125,6 +125,7 @@ exports.addQuiz = async (req: Request, res: Response) => {
 
 exports.getAllQuizzesFromUser = async (req: Request, res: Response) => {
     const userId = verifyOwnerOfQuiz(req);
+    
     if (!userId) {
         res.status(401).json({ message: 'Invalid token' });
         return;

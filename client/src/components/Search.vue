@@ -6,6 +6,7 @@ import router from '../router';
 interface Quiz {
     id: number;
     name: string;
+    username: string;
 }
 
 const searchQuery = ref('');
@@ -17,7 +18,7 @@ async function handleSearchQuiz() {
     if (searchQuery.value === '') {
         return;
     }
-    const response = await axios.get('/api/quizzes/search', {
+    const response = await axios.get('/api/quizzes', {
         params: {
             search: searchQuery.value,
         },
@@ -51,7 +52,7 @@ function handlePlayQuiz(id: number) {
                 <div v-else class="list-group">
                     <a @click="handlePlayQuiz(quiz.id)" v-for="quiz in searchedQuizzes" :key="quiz.id"
                         class="mt-3 list-group-item">
-                        {{ quiz.name }}
+                        "{{ quiz.name }}", gemaakt door {{ quiz.username }}
                     </a>
                 </div>
             </div>

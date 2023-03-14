@@ -26,13 +26,13 @@ TRUNCATE quizzes;
 [x] - delete an entire quiz  
 [x] - Wel echt /1 doen ipv query param  
 [x] - Search doen op /quizzes en dan search param meegeven en dit checken in de controller  
-[] - fix broken endpoints client side  
+[x] - fix broken endpoints client side  
 [] - Update an entire quiz client side  
 [] - check each api call on client side for erros  
-[] - Add search function to /choose page  
+[x] - Add search function to /choose page  
 [] - style the login modal  
 [] - style register page  
-[] - Show the username of the person that made a public quiz     
+[x] - Show the username of the person that made a public quiz     
 [] - add some information on the homepage of the website   
 [] - update audience and issuer to work on remote  
 [] - change username and email    
