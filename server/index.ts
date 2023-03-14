@@ -12,7 +12,7 @@ dotenv.config();
 const app: Express = express();
 const port = 3000;
 
-// set max limit to 50mb
+// set max limit to 1.1mb
 app.use(bodyParser.json({ limit: '1.1mb' }));
 
 // use JSON
