@@ -30,21 +30,26 @@ app.use('/api/quizzes', QuizRouter);
 const server = http.createServer(app);
 
 // initialize socket.io
-// const io = require('socket.io')(server, {
-//     cors: {
-//         origin: '*',
-//     },
-// });
+const io = require('socket.io')(server, {
+    cors: {
+        origin: '*',
+    },
+});
 
-// // handle socket connections
+// handle socket connections
 // io.on('connection', (socket: Socket) => {
 //     console.log(`A new socket connection has been established with id: ${socket.id}`);
-
-//     socket.on('message', (msg: string) => {
-//         console.log(msg);
-//         io.emit('message', msg);
+  
+//     socket.on('join', (roomId: string) => {
+//       socket.join(roomId);
+//       console.log(`User with socket id ${socket.id} joined room ${roomId}`);
 //     });
-// });
+  
+//     socket.on('answer', (roomId: string, answer: string) => {
+//       console.log(`submitted answer ${answer} in room ${roomId}`);
+//     });
+//   });
+  
 
 // start server
 server.listen(port, () => {
