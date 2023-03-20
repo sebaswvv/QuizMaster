@@ -29,7 +29,8 @@ TRUNCATE quizzes;
 [x] - fix broken endpoints client side  
 [x] - Update an entire quiz client side  
 [x] - Add search function to /choose page  
-[x] - Show the username of the person that made a public quiz     
+[x] - Show the username of the person that made a public quiz  
+[] - compress images.     
 [] - style the login modal  
 [] - Check if there are components where needed  
 [] - filteren and pagination op GET  
