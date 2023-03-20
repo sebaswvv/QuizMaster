@@ -3,6 +3,9 @@ import { ref } from 'vue';
 
 const { question } = defineProps(["question"]);
 
+// define emits
+const emit = defineEmits(["error", "remove-question"]);
+
 function handleFileUpload(event: any) {
   const file = event.target.files[0];
   // check if file is not larger than 1MB
@@ -11,7 +14,7 @@ function handleFileUpload(event: any) {
   reader.onload = (e) => {
     // check file size
     if (file.size > 1000000) {
-      alert("Afbeelding is te groot, maximaal 1MB");
+      emit("error", "Afbeelding is te groot");
       return;
     }
     // set the image to the question

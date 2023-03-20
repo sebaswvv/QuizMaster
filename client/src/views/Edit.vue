@@ -43,8 +43,6 @@ onMounted(async () => {
         // foreach question, set the time from 00:00:00 to seconds
         questions.value.forEach((question: any) => {
             const time = question.timeToAnswer.split(":");
-            console.log(time);
-            // calculate the senconds
             const seconds =
                 parseInt(time[0]) * 3600 +
                 parseInt(time[1]) * 60 +

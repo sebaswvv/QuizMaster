@@ -97,6 +97,11 @@ function removeQuestion(question: any) {
   questions.value.splice(index, 1);
 }
 
+function handleError(errorMsg: any) {
+  console.log(errorMsg);
+  errorMessage.value = errorMsg;
+}
+
 // click outside modal to close
 window.addEventListener('click', (e: MouseEvent) => {
   if (e.target === document.querySelector('.modal')) {
@@ -138,7 +143,7 @@ onMounted(() => {
 
     <!-- foreach question a new question box execpt the first one -->
     <div v-for="(question, index) in questions" :key="index">
-      <NewQuestionBox :question="question" @remove-question="removeQuestion" />
+      <NewQuestionBox :question="question" @error="handleError" @remove-question="removeQuestion" />
     </div>
 
     <!-- button to add new question -->
