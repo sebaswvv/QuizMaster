@@ -21,8 +21,6 @@ const userName = ref(loginStore.getUsername);
 
 const quizzes = ref<quiz[]>([]);
 
-const imageSrc = ref('');
-
 onMounted(async () => {
     if (!loginStore.isLoggedIn) {
         router.push('/');
@@ -36,7 +34,6 @@ onMounted(async () => {
     });
     // add the quizzes to the quizzes array
     quizzes.value = (await response).data;
-    // imageSrc.value = quizzes.value[0].questions[0].image;
 });
 function handleLogout() {
     loginStore.logout();
@@ -69,7 +66,6 @@ async function handleQuizDelete(quizId: number) {
         <p class="header-text text-center">Hier kan je je eigen quizzes inzien, aanpassen en spelen!</p>
     </div>
 
-    <!-- <img :src="imageSrc" alt="Image"> -->
     <div class="container">
         <div class="row">
             <div v-for="quiz in quizzes" class="mx-2 card" style="width: 18rem;">

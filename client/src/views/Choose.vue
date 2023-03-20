@@ -13,9 +13,9 @@ const loginStore = useLoginStore();
 const small = ref(false);
 const modalIsOpen = ref(false);
 
-function handleParticipate() {
-    small.value = true;
-}
+// function handleParticipate() {
+//     small.value = true;
+// }
 
 function handlePlayOwnQuiz() {
     // check if user is logged in
@@ -40,7 +40,7 @@ function handleSearchQuiz() {
         <account-icon />
         <h2 class="text-center">Wat wil je doen?</h2>
         <div class="d-flex flex-row justify-content-center">
-            <button class="button mx-2" @click="handleParticipate">Deelnemen aan een quiz</button>
+            <!-- <button class="button mx-2" @click="handleParticipate">Deelnemen aan een quiz</button> -->
             <button class="button mx-2" @click="handlePlayOwnQuiz">Speel een eigen quiz</button>
             <button class="button mx-2" @click="handleSearchQuiz">Zoek een openbare quiz om te spelen</button>
         </div>

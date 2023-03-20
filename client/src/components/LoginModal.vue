@@ -44,17 +44,11 @@ async function login() {
                 <div class="mt-2">
                     <label class="form-control-placeholder" for="password">Wachtwoord</label>
                     <input id="password-field" type="password" class="form-control" v-model="password" />
-                    <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                 </div>
                 <div class="mt-3">
-                    <button @click="login" type="button" class="form-control btn btn-primary rounded submit px-3">
+                    <button @click="login" type="button" class="mb-3 mt-2 button">
                         Login
                     </button>
-                </div>
-                <div class="form-group d-md-flex">
-                    <!-- <div class="w-50 text-md-right">
-                                                                                                                                <a href="#">Forgot Password</a>
-                                                                                                                            </div> -->
                 </div>
                 <p class="text-center">
                     Nog geen account?
@@ -84,6 +78,17 @@ async function login() {
     background-color: #fff;
     padding: 2rem;
     border-radius: 0.5rem;
+}
+
+.button {
+    display: block;
+    margin: 0 auto;
+    background-color: #0D5D56;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
 }
 
 .modal {

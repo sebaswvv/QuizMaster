@@ -9,6 +9,7 @@ const timeToAnswerInSeconds = (+timeParts[0]) * 60 * 60 + (+timeParts[1]) * 60 +
 
 const timeIsUp = ref(false);
 const correctAnswer = ref('...');
+const imageSrc = ref('');
 
 // when timer slider emits timeIsUp, set timeIsUp to true
 function handleTimeIsUp() {
@@ -32,6 +33,7 @@ onMounted(() => {
     // reset own variables and components
     timeIsUp.value = false;
     correctAnswer.value = '...';
+    imageSrc.value = question.image;
 });
 </script>
 
@@ -39,6 +41,7 @@ onMounted(() => {
     <TimerSlider :timeInSeconds="timeToAnswerInSeconds" @timeIsUp="handleTimeIsUp" />
     <div class="center">
         <h2>Vraag {{ round + 1 }}: {{ question.text }}</h2>
+        <img id="image" v-if="imageSrc != ''" :src="imageSrc" alt="Image">
         <div v-for="(option, index) in question.options" :key="option.id" :id="option.id" class="option-block">
             <div class="option-letter">{{ String.fromCharCode(index + 65) }}.</div>
             <div class="option-text">{{ option.text }}</div>
@@ -51,6 +54,11 @@ onMounted(() => {
 </template>
   
 <style scoped>
+#image {
+    width: 30%;
+    margin-bottom: 10px;
+}
+
 .correct-answer {
     font-family: 'Fredoka One', cursive;
     font-size: 25px;
