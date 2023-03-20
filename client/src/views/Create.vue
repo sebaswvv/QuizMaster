@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 import HomeIcon from "../components/HomeIcon.vue";
 import LoginModal from "../components/LoginModal.vue";
@@ -13,7 +13,7 @@ const loginStore = useLoginStore();
 const quizStore = useQuizStore();
 
 // set the questions to the questions in the quizStore
-const questions: any = ref(quizStore.quiz.questions);
+const questions: any = ref(null);
 const errorMessage = ref("");
 
 const modalIsOpen = ref(false);
@@ -102,6 +102,11 @@ window.addEventListener('click', (e: MouseEvent) => {
   if (e.target === document.querySelector('.modal')) {
     modalIsOpen.value = false;
   }
+});
+
+onMounted(() => {
+  quizStore.resetQuiz();
+  questions.value = quizStore.quiz.questions;
 });
 </script>
 
