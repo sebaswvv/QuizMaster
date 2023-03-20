@@ -9,22 +9,16 @@ class QuizRepository extends Repository {
         try {
             // start transaction
             await this.knex.transaction(async (trx: any) => {
-                // disable foreign key checks
                 await this.knex.raw('SET FOREIGN_KEY_CHECKS = 0');
-                
-                // delete all options for the quiz
+
                 await this.knex('options').where('questionId', id).del();
 
-                // delete all questions for the quiz
                 await this.knex('questions').where('quizId', id).del();
 
-                // delete the quiz
                 await this.knex('quizzes').where('id', id).del();
 
-                // enable foreign key checks
                 await this.knex.raw('SET FOREIGN_KEY_CHECKS = 1');
 
-                // commit transaction
                 await trx.commit();
             });
             return true;
@@ -36,7 +30,6 @@ class QuizRepository extends Repository {
 
     async searchQuizzes(search: any) {
         try {
-            // search only public quizzes with name like search
             // also add the username to each quiz
             const quizzes = await this.knex('quizzes')
                 .select('quizzes.id', 'quizzes.name', 'users.username')

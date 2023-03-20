@@ -1,12 +1,13 @@
 <script setup lang="ts">
 const { question } = defineProps(["question"]);
 
-// define emits
+// to make sure the standard value isnt 0
+question.timeToAnswer = 20;
+
 const emit = defineEmits(["error", "remove-question"]);
 
 function handleFileUpload(event: any) {
   const file = event.target.files[0];
-  // check if file is not larger than 1MB
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = (e) => {
@@ -15,7 +16,6 @@ function handleFileUpload(event: any) {
       emit("error", "Afbeelding is te groot");
       return;
     }
-    // set the image to the question
     question.image = e.target?.result;
   };
 }
@@ -50,6 +50,7 @@ function handleFileUpload(event: any) {
         </div>
       </div>
       <div class="col-md-4">
+        <p id="text">Aantal seconden om te antwoorden:</p>
         <input type="text" class="form-control mb-3" v-model="question.timeToAnswer"
           placeholder="Seconden om te antwoorden">
         <!-- plus button to add an image -->
@@ -69,6 +70,10 @@ function handleFileUpload(event: any) {
 </template>
 
 <style scoped>
+#text {
+  margin-bottom: 1px;
+}
+
 .remove-button {
   background-color: #0D5D56;
   color: white;

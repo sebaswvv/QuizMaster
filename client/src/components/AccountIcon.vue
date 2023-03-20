@@ -39,11 +39,10 @@ const modalIsOpen = ref(false);
 
 function openAccountPage() {
     if (loginStore.isLoggedIn) {
-        // redirect to account page
         router.push('/account');
         return;
     }
-    // if not, open login modal	
+    // open login modal	
     modalIsOpen.value = true;
 }
 
