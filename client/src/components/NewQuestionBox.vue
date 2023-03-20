@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
 const { question } = defineProps(["question"]);
 
 // define emits
@@ -27,7 +25,6 @@ function handleFileUpload(event: any) {
   <!-- create question -->
   <div class="question-box mb-3 form-group">
     <button class="remove-button mb-1" @click="$emit('remove-question', question)">&#10005;</button>
-    <!-- question name:  -->
     <!-- answers -->
     <div class="row">
       <div class="col-md-8">
