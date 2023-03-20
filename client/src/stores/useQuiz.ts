@@ -31,6 +31,24 @@ export const useQuizStore = defineStore({
         setUserId() {
             this.quiz.userId = useLoginStore().getId;
         },
+        async updateQuiz() {
+            const config = {
+                headers: { Authorization: `Bearer ${useLoginStore().getToken}` }
+            };
+
+            try {
+                await axios.put(
+                    `/api/quizzes/${this.quiz.id}`,
+                    this.quiz,
+                    config
+                );      
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        setQuiz(quiz: Quiz) {
+            this.quiz = quiz;
+        },
         async publishQuiz() {
             // publish the quiz
             const quizAsJson = JSON.parse(JSON.stringify(this.quiz));

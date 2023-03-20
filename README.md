@@ -28,7 +28,7 @@ TRUNCATE quizzes;
 [x] - Search doen op /quizzes en dan search param meegeven en dit checken in de controller  
 [x] - fix broken endpoints client side  
 [] - Update an entire quiz client side  
-[] - check each api call on client side for erros  
+[] - make sure the user gets correct erros    
 [x] - Add search function to /choose page  
 [] - style the login modal  
 [] - style register page  
