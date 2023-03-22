@@ -38,17 +38,31 @@ const io = require('socket.io')(server, {
 
 // handle socket connections
 // io.on('connection', (socket: Socket) => {
-//     console.log(`A new socket connection has been established with id: ${socket.id}`);
-  
-//     socket.on('join', (roomId: string) => {
-//       socket.join(roomId);
-//       console.log(`User with socket id ${socket.id} joined room ${roomId}`);
+//     // master creates roomId client side and joins the room. other clients follow and join the room
+//     socket.on('join', (data) => {
+//         const [room, userName] = data.split(',');
+//         socket.join(room);
+//         socket.to(room).emit('joined', userName);
+//     })
+
+//     // master sends game start to all clients
+//     socket.on('game-start', (data: any) => {
+//         const [room] = data.split(',');
+//         socket.to(room).emit('game-start', 'Game has started');
 //     });
-  
-//     socket.on('answer', (roomId: string, answer: string) => {
-//       console.log(`submitted answer ${answer} in room ${roomId}`);
+
+//     // master sends question to all clients
+//     socket.on('question', (data: any) => {
+//         const [room, question] = data.split(',');
+//         socket.to(room).emit('question', question);
 //     });
-//   });
+
+//     // master sends answer to all clients
+//     socket.on('answer', (data: any) => {
+//         const [room, answer] = data.split(',');
+//         socket.to(room).emit('answer', answer);
+//     });
+// });
   
 
 // start server
