@@ -5,6 +5,8 @@ import { ref } from 'vue';
 import { useLoginStore } from '../stores/useLogin';
 import { onMounted } from 'vue';
 import Question from '../components/Question.vue';
+import { io } from "socket.io-client";
+const socket = io("http://localhost:3000");
 
 const loginStore = useLoginStore();
 
@@ -12,14 +14,24 @@ const loginStore = useLoginStore();
 const { id } = router.currentRoute.value.params;
 
 const quizName = ref('');
-const questions = ref([]);
+const questions = ref(<any>[]);
 const started = ref(false);
 const ended = ref(false);
-const currentQuestion = ref(null);
+const currentQuestion = ref(<any>null);
 const round = ref(0);
+
+const roomId = ref('');
+const players = ref(<any>[]);
+
+
+function newAnswer(answer: string) {
+    socket.emit('newAnswer', { roomId: roomId.value, answer: answer });
+}
 
 
 function nextQuestion() {
+    socket.emit('newAnswer', { roomId: roomId.value, answer: currentQuestion.value.correctAnswer });
+    // emit the next question
     // next round
     round.value++
     // if round is equal to the amount of questions, the game is finished
@@ -32,12 +44,16 @@ function nextQuestion() {
     } else {
         // load the next question
         currentQuestion.value = questions.value[round.value];
+        socket.emit('newQuestion', { roomId: roomId.value, question: currentQuestion.value });
     }
 }
 
 function startGame() {
-    // load the question.index = round as component
+    socket.emit('start', { roomId: roomId.value, quizName: quizName.value });
+
+    // emit the first question
     currentQuestion.value = questions.value[round.value];
+    socket.emit('newQuestion', { roomId: roomId.value, question: currentQuestion.value });
 
     // start the game to show the component
     started.value = true;
@@ -52,11 +68,12 @@ onMounted(async () => {
             },
         });
         const quiz = response.data;
-        // set questions
         questions.value = quiz.questions;
-
-        // set quizName
         quizName.value = quiz.name;
+
+        generateRoomId();
+        createRoom();
+        listenToEmits();
     } catch (error: any) {
         // check if the error is a 401 unauthorized
         if (error.response.status === 401) {
@@ -65,26 +82,74 @@ onMounted(async () => {
         }
     }
 });
+
+function listenToEmits() {
+    socket.on("joined", (data: any) => {
+        players.value.push(data);
+    });
+}
+
+function createRoom() {
+    // creae object with room id and username master
+    const data = {
+        roomId: roomId.value,
+        username: "master"
+    }
+    socket.emit("join", data);
+}
+
+function generateRoomId() {
+    const randomNumbers = [];
+    const randomLetters = [];
+    for (let i = 0; i < 4; i++) {
+        randomNumbers.push(Math.floor(Math.random() * 10));
+    }
+    for (let i = 0; i < 2; i++) {
+        randomLetters.push(String.fromCharCode(Math.floor(Math.random() * 26) + 65));
+    }
+    roomId.value = randomNumbers.join('') + randomLetters.join('');
+}
 </script>
 
 <template>
     <div class="center">
         <h1 v-if="!started && !ended">Maak je klaar voor de:</h1>
-        <h2 class="text-center">{{ quizName }}</h2>
+        <h2 class="mb-5 text-center">{{ quizName }}</h2>
+        <h3 v-if="!started && !ended">Ga naar localhost/participate en voer deze code in om mee te doen:</h3>
+        <h2 v-if="!started && !ended">{{ roomId }}</h2>
+        <h1 v-if="!started && !ended">Deelnemers:</h1>
+        <u class="list" v-if="!started && !ended">
+            <li v-for="player in players" :key="player">{{ player }}</li>
+        </u>
         <button v-if="!started && !ended" class="button" @click="startGame">SPEEL</button>
-        <Question v-if="started" :question="currentQuestion" :round="round" :key="round" @nextQuestion="nextQuestion" />
+        <Question v-if="started" :question="currentQuestion" :round="round" :key="round" @nextQuestion="nextQuestion"
+            @newAnswer="newAnswer" />
         <h2 v-if="ended" class="text-center">Dat was hem, bedankt voor het spelen</h2>
         <button v-if="ended" class="button" @click="$router.push('/')">Terug naar home</button>
     </div>
 </template>
 
 <style scoped>
+.list {
+    list-style-type: none;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Boogaloo', cursive;
+    font-size: 5rem;
+    color: #000000;
+}
+
 .center {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 10vh;
-    height: 100vh;
+    height: 100%;
     background-color: #F4F1DE;
 }
 
