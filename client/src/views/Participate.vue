@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { io } from "socket.io-client";
-import router from '../router';
 const socket = io('http://localhost:3000');
 
 const roomId = ref('');
@@ -18,28 +17,7 @@ const selectedAnOption = ref(false);
 const optionSelected = ref('');
 
 onMounted(() => {
-    socket.on('started', data => {
-        started.value = true;
-        quizName.value = data;
-    });
-
-    socket.on('newQuestion', data => {
-        console.log('new question');
-        selectedAnOption.value = false;
-        optionSelected.value = '';
-        question.value = data;
-    });
-
-    socket.on('newAnswer', data => {
-        correctAnswer.value = data;
-
-        // check if the correct answer is the same as the selected option
-        if (optionSelected.value === data) {
-            console.log('right answer');
-        } else {
-            console.log('wrong answer');
-        }
-    });
+    listinToEmits();
 });
 
 function joinRoom() {
@@ -72,14 +50,39 @@ function handleAnswered(option: any) {
     selectedAnOption.value = true;
     optionSelected.value = option.text;
 }
+
+function listinToEmits() {
+    socket.on('started', data => {
+        started.value = true;
+        quizName.value = data;
+    });
+
+    socket.on('newQuestion', data => {
+        console.log('new question');
+        selectedAnOption.value = false;
+        optionSelected.value = '';
+        question.value = data;
+    });
+
+    socket.on('newAnswer', data => {
+        correctAnswer.value = data;
+
+        // check if the correct answer is the same as the selected option
+        if (optionSelected.value === data) {
+            console.log('right answer');
+        } else {
+            console.log('wrong answer');
+        }
+    });
+}
 </script>
 
 
 <template>
     <div class="center">
         <!-- started -->
+        <h1>quiz: {{ quizName }}</h1>
         <div class="center" v-if="started">
-            <h1>quiz: {{ quizName }}</h1>
             <h2>Vraag: {{ question.text }}</h2>
             <div @click="handleAnswered(option)" v-for="(option, index) in question.options" :key="option.id"
                 :id="option.id" class="option-block">
@@ -93,16 +96,20 @@ function handleAnswered(option: any) {
         <!-- started -->
 
         <!-- waiting -->
-        <h1 v-if="joined && !started">quiz code: {{ roomId }}</h1>
-        <h2 v-if="joined && !started">Wachten tot de quiz begint....</h2>
+        <div class="center" v-if="joined && !started">
+            <h1>quiz code: {{ roomId }}</h1>
+            <h2>Wachten tot de quiz begint....</h2>
+        </div>
         <!-- waiting -->
 
         <!-- join -->
-        <h1 v-if="!joined">Code:</h1>
-        <input v-if="!joined" class="mt-3" type="text" v-model="roomId" placeholder="Room ID" />
-        <input v-if="!joined" class="mt-3" type="text" v-model="username" placeholder="IGN" />
-        <p v-if="!joined" class="message">{{ message }}</p>
-        <button v-if="!joined" class="button" @click="joinRoom">Join</button>
+        <div class="center" v-if="!joined">
+            <h1>Code:</h1>
+            <input class="mt-3" type="text" v-model="roomId" placeholder="Room ID" />
+            <input class="mt-3" type="text" v-model="username" placeholder="IGN" />
+            <p class="message">{{ message }}</p>
+            <button class="button" @click="joinRoom">Join</button>
+        </div>
         <!-- join -->
     </div>
 </template>

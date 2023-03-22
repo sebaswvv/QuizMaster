@@ -7,10 +7,8 @@ import { onMounted } from 'vue';
 import Question from '../components/Question.vue';
 import { io } from "socket.io-client";
 const socket = io("http://localhost:3000");
-
 const loginStore = useLoginStore();
 
-// get params from the url
 const { id } = router.currentRoute.value.params;
 
 const quizName = ref('');
@@ -19,12 +17,12 @@ const started = ref(false);
 const ended = ref(false);
 const currentQuestion = ref(<any>null);
 const round = ref(0);
-
 const roomId = ref('');
 const players = ref(<any>[]);
 
 
 function timeIsUp(answer: string) {
+    // to send the correct answer to the players
     socket.emit('newAnswer', { roomId: roomId.value, answer: answer });
 }
 
@@ -49,9 +47,11 @@ function nextQuestion() {
 }
 
 function startGame() {
+    // notify the players that the game has started
     socket.emit('start', { roomId: roomId.value, quizName: quizName.value });
 
-    // emit the first question
+
+    // emit the question to the players
     currentQuestion.value = questions.value[round.value];
     socket.emit('newQuestion', { roomId: roomId.value, question: currentQuestion.value });
 
@@ -116,20 +116,28 @@ function generateRoomId() {
 </script>
 
 <template>
-    <div class="center">
-        <h1 v-if="!started && !ended">Maak je klaar voor de:</h1>
+    <!-- starting.. -->
+    <div class="center" v-if="!started && !ended">
+        <h1>Maak je klaar voor de:</h1>
         <h2 class="mb-5 text-center">{{ quizName }}</h2>
-        <h3 v-if="!started && !ended">Ga naar localhost/participate en voer deze code in om mee te doen:</h3>
-        <h2 v-if="!started && !ended">{{ roomId }}</h2>
-        <h1 v-if="!started && !ended">Deelnemers:</h1>
-        <u class="list" v-if="!started && !ended">
+        <h3>Ga naar localhost/participate en voer deze code in om mee te doen:</h3>
+        <h2>{{ roomId }}</h2>
+        <h1>Deelnemers:</h1>
+        <u class="list">
             <li v-for="player in players" :key="player">{{ player }}</li>
         </u>
-        <button v-if="!started && !ended" class="button" @click="startGame">SPEEL</button>
+        <button class="button" @click="startGame">SPEEL</button>
+    </div>
+    <!-- starting.. -->
+
+    <div class="center">
         <Question v-if="started" :question="currentQuestion" :round="round" :key="round" @nextQuestion="nextQuestion"
             @timeIsUp="timeIsUp" />
-        <h2 v-if="ended" class="text-center">Dat was hem, bedankt voor het spelen</h2>
-        <button v-if="ended" class="button" @click="$router.push('/')">Terug naar home</button>
+    </div>
+
+    <div class="center" v-if="ended">
+        <h2 class="text-center">Dat was hem, bedankt voor het spelen</h2>
+        <button class="button" @click="$router.push('/')">Terug naar home</button>
     </div>
 </template>
 
@@ -153,7 +161,7 @@ function generateRoomId() {
     flex-direction: column;
     align-items: center;
     padding-top: 10vh;
-    height: 100%;
+    height: 100vh;
     background-color: #F4F1DE;
 }
 
