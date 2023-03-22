@@ -1,6 +1,9 @@
 import { QuizRepository } from "../repositories/quizrepository";
 import { Quiz } from "../models/quiz";
 
+// for image compression
+import sharp from 'sharp';
+
 class QuizService {
     private quizRepository: QuizRepository;
 
@@ -52,6 +55,31 @@ class QuizService {
             quizId
         );
 
+        // foreach question, compress image
+        // for (let i = 0; i < quiz.questions.length; i++) {
+        //     const question = quiz.questions[i];
+        //     if (question.image) {
+        //       let base64Data = question.image.replace(/^data:image\/jpeg;base64,/, '');
+        //       // or png
+        //       base64Data = question.image.replace(/^data:image\/png;base64,/, '');
+        //       const buffer = Buffer.from(base64Data, 'base64');
+        //       // log the size of the image
+        //       console.log(buffer.length);
+        //       const compressedImageBuffer = await sharp(buffer)
+        //         .resize({ width: 500 })
+        //         .jpeg({ quality: 80 })
+        //         .toBuffer();
+          
+        //       const mimeType = 'image/jpeg';
+        //       const base64EncodedImage = `data:${mimeType};base64,${compressedImageBuffer.toString('base64')}`;
+          
+        //       question.image = base64EncodedImage;
+
+        //       // log the size of the compressed image
+        //         console.log(compressedImageBuffer.length);
+        //     }
+        // }
+
         if (!this.verifyQuiz(quiz)) {
             return false;
         }
@@ -90,6 +118,23 @@ class QuizService {
             rawQuiz.questions,   
             undefined
         );        
+
+        // // foreach question, compress image
+        // for (let i = 0; i < quiz.questions.length; i++) {
+        //     const question = quiz.questions[i];
+        //     console.log(question.image);
+        //     if (question.image) {
+        //       const compressedImageBuffer = await sharp(question.image.buffer)
+        //         .resize({ width: 500 })
+        //         .jpeg({ quality: 80 })
+        //         .toBuffer();
+          
+        //       question.image = {
+        //         buffer: compressedImageBuffer,
+        //         mimetype: 'image/jpeg'
+        //       };
+        //     }
+        //   }
 
         if (!this.verifyQuiz(quiz)) {
             return false;

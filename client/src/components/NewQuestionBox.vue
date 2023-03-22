@@ -11,7 +11,7 @@ function handleFileUpload(event: any) {
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = (e) => {
-    // check file size
+    // check file size (max 1MB)
     if (file.size > 1000000) {
       emit("error", "Afbeelding is te groot");
       return;
