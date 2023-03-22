@@ -9,8 +9,13 @@ function routeGet (req: Request, res: Response) {
     if (req.query.search) {
         QuizController.searchQuizzes(req, res);
     }
-    else {
+    // if there is an id in the url
+    else if (req.params.id) {
         QuizController.getQuiz(req, res);
+    } else {
+        res.status(400).json({
+            message: 'Please provide a search query or an id'
+        }); 
     }
 }
 

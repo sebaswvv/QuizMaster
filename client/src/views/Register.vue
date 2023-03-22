@@ -35,15 +35,12 @@ async function register() {
 
 <template>
     <div class="container">
-        <Navbar />
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-4">
                 <div class="wrap">
-                    <div class="login-wrap p-4 p-md-5">
+                    <div class="signup login-wrap p-4 p-md-5">
                         <div class="d-flex">
-                            <div class="w-200">
-                                <h3 class="mb-4">Registreer je hier</h3>
-                            </div>
+                            <h3 class="text-center mb-4">Registreer je hier</h3>
                         </div>
                         <form action="#" class="signin-form">
                             <div class="form-group mt-3">
@@ -59,9 +56,8 @@ async function register() {
                                 <input id="password-field" type="password" class="form-control" v-model="password"
                                     required />
                             </div>
-                            <div class="form-group">
-                                <button @click="register" type="button"
-                                    class="form-control btn btn-primary rounded submit px-3">
+                            <div class="mt-3 form-group">
+                                <button @click="register" type="button" class="form-control button px-3">
                                     Registreer
                                 </button>
                             </div>
@@ -74,4 +70,28 @@ async function register() {
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.signup {
+    /* background grey */
+    background-color: #f2f2f2;
+    margin: 5vh;
+    border-radius: 0.5rem;
+    width: 50vh;
+    /* middle of screen */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50%;
+    margin-bottom: auto;
+}
+
+.button {
+    display: block;
+    margin: 0 auto;
+    background-color: #0D5D56;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+</style>

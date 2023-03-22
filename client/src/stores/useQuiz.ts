@@ -46,6 +46,10 @@ export const useQuizStore = defineStore({
                 console.log(error);
             }
         },
+        updateImage(questionId: number, image: string) {
+            const question = this.quiz.questions.find(q => q.id === questionId);
+            question.image = image;
+        },
         setQuiz(quiz: Quiz) {
             this.quiz = quiz;
         },
@@ -72,7 +76,7 @@ export const useQuizStore = defineStore({
                 id: 0,
                 name: '',
                 public: false,
-                userId: 0,
+                userId: this.quiz.userId,
                 questions: [],
             }
         }

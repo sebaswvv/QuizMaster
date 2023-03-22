@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useQuizStore } from '../stores/useQuiz';
+
 const { question } = defineProps(["question"]);
+const quizStore = useQuizStore();
 
 // to make sure the standard value isnt 0
 question.timeToAnswer = 20;
@@ -17,6 +20,8 @@ function handleFileUpload(event: any) {
       return;
     }
     question.image = e.target?.result;
+    // change image in store
+    quizStore.updateImage(question.id, question.image);
   };
 }
 </script>
@@ -62,6 +67,8 @@ function handleFileUpload(event: any) {
             <input @change="handleFileUpload" accept="image/*" type="file" class="custom-file-input" id="inputGroupFile01"
               aria-describedby="inputGroupFileAddon01">
             <label class="custom-file-label" for="inputGroupFile01">Kies afbeelding</label>
+            <!-- if there is an image  -->
+            <img v-if="question.image" :src="question.image" id="image-preview" class="mt-4 img" alt="Responsive image">
           </div>
         </div>
       </div>
@@ -70,6 +77,12 @@ function handleFileUpload(event: any) {
 </template>
 
 <style scoped>
+#image-preview {
+  width: 500px;
+  height: 200px;
+  object-fit: contain;
+}
+
 #text {
   margin-bottom: 1px;
 }

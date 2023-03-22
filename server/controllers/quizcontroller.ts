@@ -53,14 +53,25 @@ exports.editQuiz = async (req: Request, res: Response) => {
 }
 
 exports.searchQuizzes = async (req: Request, res: Response) => {
-    // TODO add pagination
-    const quizzes = await quizService.searchQuizzes(req.query.search);
+    // get limit and offset
+    const limit: any = req.query.limit ? req.query.limit : 10;
+    const offset: any = req.query.offset ? req.query.offset : 0;
+    
+    // check if limit and offset are numbers
+    if (isNaN(limit) || isNaN(offset)) {
+        res.status(400).json({ message: 'Limit and offset must be numbers' });
+        return;
+    }        
+
+    const quizzes = await quizService.searchQuizzes(req.query.search, limit, offset);
     if (!quizzes) {
         res.status(400).json({ message: 'Error searching quizzes' });
         return;
     }
     // send the req.body back
     res.status(200).json(quizzes);
+    return;
+    
 }
 
 exports.deleteQuiz = async (req: Request, res: Response) => {
@@ -120,8 +131,6 @@ exports.addQuiz = async (req: Request, res: Response) => {
     // send the req.body back
     res.status(200).json(quiz);
 }
-
-
 
 exports.getAllQuizzesFromUser = async (req: Request, res: Response) => {
     const userId = verifyOwnerOfQuiz(req);

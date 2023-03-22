@@ -28,18 +28,20 @@ class QuizRepository extends Repository {
         }
     }
 
-    async searchQuizzes(search: any) {
+    async searchQuizzes(search: any, limit: any, offset: any) {
         try {
             // also add the username to each quiz
             const quizzes = await this.knex('quizzes')
                 .select('quizzes.id', 'quizzes.name', 'users.username')
                 .where('quizzes.public', true)
                 .andWhere('quizzes.name', 'like', `%${search}%`)
-                .join('users', 'quizzes.userId', '=', 'users.id');
+                .join('users', 'quizzes.userId', '=', 'users.id')
+                .limit(limit)
+                .offset(offset);
             return quizzes;
         } catch (error) {
             console.log(error);
-        }        
+        }
     }
 
     async editQuiz(quiz: Quiz) {

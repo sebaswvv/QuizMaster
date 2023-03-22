@@ -30,15 +30,13 @@ TRUNCATE quizzes;
 [x] - Update an entire quiz client side  
 [x] - Add search function to /choose page  
 [x] - Show the username of the person that made a public quiz  
-[] - compress images.   
-[] - style the login modal  
+[x] - style the login modal  
+[x] - style register page  
 [] - Check if there are components where needed  
-[] - filteren and pagination op GET  
+[x] - filteren and pagination op GET  
 [] - alwaysreturn error msg  
-[] - style register page  
 [] - add some information on the homepage of the website   
 [] - update audience and issuer to work on remote  
-[] - change username and email      
 [] - make sure the user gets correct erros    
 
 [] - implement socket.io to play a quiz  

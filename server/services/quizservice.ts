@@ -11,13 +11,14 @@ class QuizService {
         this.quizRepository = new QuizRepository();
     }
 
-    async searchQuizzes(search: any) {
+
+    async searchQuizzes(search: any, limit: any, offset: any) {
         try {
-            const quizzes = await this.quizRepository.searchQuizzes(search);
+            const quizzes = await this.quizRepository.searchQuizzes(search, limit, offset);
             return quizzes;
         } catch (error) {
             return false;
-        }   
+        }
     }
 
     verifyQuiz(quiz: Quiz) {
@@ -56,29 +57,13 @@ class QuizService {
         );
 
         // foreach question, compress image
-        // for (let i = 0; i < quiz.questions.length; i++) {
-        //     const question = quiz.questions[i];
-        //     if (question.image) {
-        //       let base64Data = question.image.replace(/^data:image\/jpeg;base64,/, '');
-        //       // or png
-        //       base64Data = question.image.replace(/^data:image\/png;base64,/, '');
-        //       const buffer = Buffer.from(base64Data, 'base64');
-        //       // log the size of the image
-        //       console.log(buffer.length);
-        //       const compressedImageBuffer = await sharp(buffer)
-        //         .resize({ width: 500 })
-        //         .jpeg({ quality: 80 })
-        //         .toBuffer();
-          
-        //       const mimeType = 'image/jpeg';
-        //       const base64EncodedImage = `data:${mimeType};base64,${compressedImageBuffer.toString('base64')}`;
-          
-        //       question.image = base64EncodedImage;
-
-        //       // log the size of the compressed image
-        //         console.log(compressedImageBuffer.length);
-        //     }
-        // }
+        for (let i = 0; i < quiz.questions.length; i++) {
+            const question = quiz.questions[i];
+            if (question.image) {
+                const compressedImage = await this.compressImage(question.image);
+                question.image = compressedImage;                
+            }
+        }
 
         if (!this.verifyQuiz(quiz)) {
             return false;
@@ -93,6 +78,28 @@ class QuizService {
             return false;
         }
     }
+
+    async compressImage(image: any) {
+        // check if png or jpeg
+        let base64Data;
+        if (image.startsWith('data:image/jpeg;base64,')) {
+            base64Data = image.replace(/^data:image\/jpeg;base64,/, '');
+        } else if (image.startsWith('data:image/png;base64,')) {
+            base64Data = image.replace(/^data:image\/png;base64,/, '');
+        } else {
+        }
+        const buffer = Buffer.from(base64Data, 'base64');
+        const compressedImageBuffer = await sharp(buffer)
+            .resize({ width: 500 })
+            .jpeg({ quality: 80 })
+            .toBuffer();
+    
+        const mimeType = 'image/jpeg';
+        const base64EncodedImage = `data:${mimeType};base64,${compressedImageBuffer.toString('base64')}`;
+    
+        return base64EncodedImage;
+    }
+        
 
     async deleteQuiz(id: any) {
         try {
@@ -110,6 +117,7 @@ class QuizService {
             return false;
         }      
 
+
         // create a new quiz
         const quiz = new Quiz(
             rawQuiz.name,
@@ -119,22 +127,13 @@ class QuizService {
             undefined
         );        
 
-        // // foreach question, compress image
-        // for (let i = 0; i < quiz.questions.length; i++) {
-        //     const question = quiz.questions[i];
-        //     console.log(question.image);
-        //     if (question.image) {
-        //       const compressedImageBuffer = await sharp(question.image.buffer)
-        //         .resize({ width: 500 })
-        //         .jpeg({ quality: 80 })
-        //         .toBuffer();
-          
-        //       question.image = {
-        //         buffer: compressedImageBuffer,
-        //         mimetype: 'image/jpeg'
-        //       };
-        //     }
-        //   }
+        for (let i = 0; i < quiz.questions.length; i++) {
+            const question = quiz.questions[i];
+            if (question.image) {
+                const compressedImage = await this.compressImage(question.image);
+                question.image = compressedImage;                
+            }
+        }
 
         if (!this.verifyQuiz(quiz)) {
             return false;

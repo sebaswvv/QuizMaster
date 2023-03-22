@@ -14,7 +14,7 @@ const app: Express = express();
 const port = 3000;
 
 // set max limit to 1.1mb
-app.use(bodyParser.json({ limit: '1.1mb' }));
+app.use(bodyParser.json({ limit: '2mb' }));
 
 // use JSON
 app.use(express.json());
