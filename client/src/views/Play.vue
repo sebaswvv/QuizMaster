@@ -24,13 +24,13 @@ const roomId = ref('');
 const players = ref(<any>[]);
 
 
-function newAnswer(answer: string) {
+function timeIsUp(answer: string) {
     socket.emit('newAnswer', { roomId: roomId.value, answer: answer });
 }
 
 
 function nextQuestion() {
-    socket.emit('newAnswer', { roomId: roomId.value, answer: currentQuestion.value.correctAnswer });
+    //socket.emit('newAnswer', { roomId: roomId.value, answer: currentQuestion.value.correctAnswer });
     // emit the next question
     // next round
     round.value++
@@ -127,7 +127,7 @@ function generateRoomId() {
         </u>
         <button v-if="!started && !ended" class="button" @click="startGame">SPEEL</button>
         <Question v-if="started" :question="currentQuestion" :round="round" :key="round" @nextQuestion="nextQuestion"
-            @newAnswer="newAnswer" />
+            @timeIsUp="timeIsUp" />
         <h2 v-if="ended" class="text-center">Dat was hem, bedankt voor het spelen</h2>
         <button v-if="ended" class="button" @click="$router.push('/')">Terug naar home</button>
     </div>

@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import TimerSlider from '../components/TimerSlider.vue';
 const { question, round } = defineProps(['question', 'round']);
 
-const emit = defineEmits(['newAnswer']);
+const emit = defineEmits(['timeIsUp']);
 
 // set time to answer in seconds
 const timeParts = question.timeToAnswer.split(':');
@@ -21,7 +21,7 @@ function handleTimeIsUp() {
     question.options.forEach((option: any) => {
         if (option.isCorrect) {
             correctAnswer.value = option.text;
-            emit('newAnswer', correctAnswer.value);
+            emit('timeIsUp', correctAnswer.value);
             // style the correct option.id with a green background
             const element = document.getElementById(option.id);
             if (element) {
