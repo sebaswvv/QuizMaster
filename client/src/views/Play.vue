@@ -87,6 +87,10 @@ function listenToEmits() {
     socket.on("joined", (data: any) => {
         players.value.push(data);
     });
+
+    socket.on("answer", (data: any) => {
+        console.log(data);
+    });
 }
 
 function createRoom() {

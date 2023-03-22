@@ -14,13 +14,10 @@ const started = ref(false);
 const question = ref(<any>'');
 const correctAnswer = ref('');
 
-
+const selectedAnOption = ref(false);
+const optionSelected = ref('');
 
 onMounted(() => {
-    socket.on('error', data => {
-        message.value = data;
-    });
-
     socket.on('started', data => {
         started.value = true;
         quizName.value = data;
@@ -28,11 +25,20 @@ onMounted(() => {
 
     socket.on('newQuestion', data => {
         console.log('new question');
+        selectedAnOption.value = false;
+        optionSelected.value = '';
         question.value = data;
     });
 
     socket.on('newAnswer', data => {
         correctAnswer.value = data;
+
+        // check if the correct answer is the same as the selected option
+        if (optionSelected.value === data) {
+            console.log('right answer');
+        } else {
+            console.log('wrong answer');
+        }
     });
 });
 
@@ -53,7 +59,18 @@ function joinRoom() {
 }
 
 function handleAnswered(option: any) {
-    socket.emit('answer', { roomId: roomId.value, answer: option.text });
+    if (selectedAnOption.value) {
+        return;
+    }
+    socket.emit('answer', { roomId: roomId.value, username: username.value, answer: option.text });
+
+    // give light green background to the selected option
+    const selectedOption = document.getElementById(option.id);
+    selectedOption?.classList.remove('option-block');
+    selectedOption?.classList.add('selected');
+
+    selectedAnOption.value = true;
+    optionSelected.value = option.text;
 }
 </script>
 
@@ -64,11 +81,10 @@ function handleAnswered(option: any) {
         <div class="center" v-if="started">
             <h1>quiz: {{ quizName }}</h1>
             <h2>Vraag: {{ question.text }}</h2>
-            <div v-for="(option, index) in question.options" :key="option.id" :id="option.id" class="option-block">
-                <a @click="handleAnswered(option)" href="#">
-                    <div class="option-letter">{{ String.fromCharCode(index + 65) }}.</div>
-                    <div class="option-text">{{ option.text }}</div>
-                </a>
+            <div @click="handleAnswered(option)" v-for="(option, index) in question.options" :key="option.id"
+                :id="option.id" class="option-block">
+                <div class="option-letter">{{ String.fromCharCode(index + 65) }}.</div>
+                <div class="option-text">{{ option.text }}</div>
             </div>
             <div>
                 <p class="correct-answer">Het juiste antwoord is: {{ correctAnswer }}</p>
@@ -78,11 +94,11 @@ function handleAnswered(option: any) {
 
         <!-- waiting -->
         <h1 v-if="joined && !started">quiz code: {{ roomId }}</h1>
-        <h2 v-if="joined && !started">Aan het wachten tot de quiz begint....</h2>
+        <h2 v-if="joined && !started">Wachten tot de quiz begint....</h2>
         <!-- waiting -->
 
         <!-- join -->
-        <h1 v-if="!joined">Voer hier de code in:</h1>
+        <h1 v-if="!joined">Code:</h1>
         <input v-if="!joined" class="mt-3" type="text" v-model="roomId" placeholder="Room ID" />
         <input v-if="!joined" class="mt-3" type="text" v-model="username" placeholder="IGN" />
         <p v-if="!joined" class="message">{{ message }}</p>
@@ -92,6 +108,19 @@ function handleAnswered(option: any) {
 </template>
 
 <style scoped>
+.selected {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    margin-bottom: 3px;
+    background-color: #ffa600;
+    padding: 10px;
+    box-sizing: border-box;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
 .correct-answer {
     font-family: 'Fredoka One', cursive;
     font-size: 25px;
@@ -115,6 +144,10 @@ h2 {
     color: white;
     font-weight: bold;
     text-align: center;
+}
+
+.option-block:hover {
+    cursor: pointer;
 }
 
 .option-letter {
