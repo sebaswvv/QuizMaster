@@ -28,6 +28,8 @@ function joinRoom() {
         return;
     }
 
+    roomId.value = roomId.value.toUpperCase();
+
     const data = {
         roomId: roomId.value,
         username: username.value
@@ -52,6 +54,11 @@ function handleAnswered(option: any) {
 }
 
 function listinToEmits() {
+    socket.on('error', data => {
+        message.value = data;
+        joined.value = false;
+    });
+
     socket.on('started', data => {
         started.value = true;
         quizName.value = data;
