@@ -72,7 +72,7 @@ async function handleQuizDelete(quizId: number) {
                 <div class="card-body">
                     <h5 class="card-title">{{ quiz.name }}</h5>
                     <p class="card-text">Vragen: {{ quiz.questions.length }}</p>
-                    <p class="cart-text">Opebaar: {{ quiz.public }}</p>
+                    <p class="cart-text">Opebaar: {{ quiz.public ? 'Ja' : 'Nee' }}</p>
                     <router-link :to="{ name: 'play', params: { id: quiz.id } }" class="button mx-1 mb-2">Speel
                         quiz</router-link>
 
