@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { io } from "socket.io-client";
-const socket = io('http://localhost:3000');
+const socket = io('http://192.168.146.219:3000');
 
 const roomId = ref('');
 const username = ref('');
@@ -9,12 +9,13 @@ const message = ref('');
 const quizName = ref('');
 const joined = ref(false);
 const started = ref(false);
-
 const question = ref(<any>'');
 const correctAnswer = ref('');
-
 const selectedAnOption = ref(false);
-const optionSelected = ref('');
+const optionSelected = ref();
+const correct = ref(false);
+const roundIsUp = ref(false);
+const gameEnded = ref(false);
 
 onMounted(() => {
     listinToEmits();
@@ -42,13 +43,12 @@ function handleAnswered(option: any) {
     }
     socket.emit('answer', { roomId: roomId.value, username: username.value, answer: option.text });
 
-    // give light green background to the selected option
-    const selectedOption = document.getElementById(option.id);
-    selectedOption?.classList.remove('option-block');
-    selectedOption?.classList.add('selected');
+    const selectedOptionElement = document.getElementById(option.id);
+    selectedOptionElement?.classList.remove('option-block');
+    selectedOptionElement?.classList.add('selected');
 
     selectedAnOption.value = true;
-    optionSelected.value = option.text;
+    optionSelected.value = option;
 }
 
 function listinToEmits() {
@@ -58,21 +58,42 @@ function listinToEmits() {
     });
 
     socket.on('newQuestion', data => {
-        console.log('new question');
+        // to handle new round
+        roundIsUp.value = false;
+        correct.value = false;
         selectedAnOption.value = false;
-        optionSelected.value = '';
+        optionSelected.value = null;
         question.value = data;
     });
 
     socket.on('newAnswer', data => {
         correctAnswer.value = data;
+        roundIsUp.value = true;
 
         // check if the correct answer is the same as the selected option
-        if (optionSelected.value === data) {
-            console.log('right answer');
-        } else {
-            console.log('wrong answer');
+        if (optionSelected.value.text === data) {
+            correct.value = true;
+            const selectedOption = document.getElementById(optionSelected.value.id);
+            selectedOption?.classList.remove('option-block');
+            selectedOption?.classList.add('correct-option');
         }
+    });
+
+    socket.on('end', data => {
+        // to handle end of game
+        started.value = false;
+        joined.value = false;
+        quizName.value = '';
+        roomId.value = '';
+        username.value = '';
+        message.value = '';
+        question.value = '';
+        correctAnswer.value = '';
+        selectedAnOption.value = false;
+        optionSelected.value = null;
+        correct.value = false;
+        roundIsUp.value = false;
+        gameEnded.value = true;
     });
 }
 </script>
@@ -80,37 +101,48 @@ function listinToEmits() {
 
 <template>
     <div class="center">
-        <!-- started -->
-        <h1>quiz: {{ quizName }}</h1>
-        <div class="center" v-if="started">
-            <h2>Vraag: {{ question.text }}</h2>
-            <div @click="handleAnswered(option)" v-for="(option, index) in question.options" :key="option.id"
-                :id="option.id" class="option-block">
-                <div class="option-letter">{{ String.fromCharCode(index + 65) }}.</div>
-                <div class="option-text">{{ option.text }}</div>
-            </div>
-            <div>
-                <p class="correct-answer">Het juiste antwoord is: {{ correctAnswer }}</p>
-            </div>
+        <!-- ended -->
+        <div class="center" v-if="gameEnded">
+            <h1 class="text-center">De quiz is afgelopen</h1>
+            <h2 class="text-center">Zie het scherm voor de scores</h2>
         </div>
-        <!-- started -->
+        <!-- ended -->
 
-        <!-- waiting -->
-        <div class="center" v-if="joined && !started">
-            <h1>quiz code: {{ roomId }}</h1>
-            <h2>Wachten tot de quiz begint....</h2>
-        </div>
-        <!-- waiting -->
+        <!-- started -->
+        <div v-if="!gameEnded">
+            <div class="center" v-if="started && !gameEnded">
+                <h3 class="mb-5">{{ quizName }}</h3>
+                <h2 class="text-center">Vraag: {{ question.text }}</h2>
+                <div @click="handleAnswered(option)" v-for="(option, index) in question.options" :key="option.id"
+                    :id="option.id" class="option-block">
+                    <div class="option-letter">{{ String.fromCharCode(index + 65) }}.</div>
+                    <div class="option-text">{{ option.text }}</div>
+                </div>
+                <div v-if="roundIsUp">
+                    <p v-if="correct" class="text-center correct-answer">Dat is goed +1 punt voor jou!</p>
+                    <p v-if="!correct" class="text-center correct-answer">Helaas, het juist antwoord is: {{ correctAnswer }}
+                    </p>
+                </div>
+            </div>
+            <!-- started -->
 
-        <!-- join -->
-        <div class="center" v-if="!joined">
-            <h1>Code:</h1>
-            <input class="mt-3" type="text" v-model="roomId" placeholder="Room ID" />
-            <input class="mt-3" type="text" v-model="username" placeholder="IGN" />
-            <p class="message">{{ message }}</p>
-            <button class="button" @click="joinRoom">Join</button>
+            <!-- waiting -->
+            <div class="center" v-if="joined && !started">
+                <h2>quiz code: {{ roomId }}</h2>
+                <h2>Wachten tot de quiz begint....</h2>
+            </div>
+            <!-- waiting -->
+
+            <!-- join -->
+            <div class="center" v-if="!joined">
+                <h1>Quiz code:</h1>
+                <input class="mt-3" type="text" v-model="roomId" placeholder="Code" />
+                <input class="mt-3" type="text" v-model="username" placeholder="IGN" />
+                <p class="message">{{ message }}</p>
+                <button class="button" @click="joinRoom">Doe mee</button>
+            </div>
+            <!-- join -->
         </div>
-        <!-- join -->
     </div>
 </template>
 
@@ -134,10 +166,13 @@ function listinToEmits() {
     margin-top: 10px;
 }
 
+.correct-option {
+    background-color: #2bff01;
+}
+
 h2 {
     font-family: 'Fredoka One', cursive;
-    font-size: 50px;
-    margin-bottom: 10px;
+    font-size: 25px;
 }
 
 .option-block {
@@ -172,19 +207,6 @@ h2 {
     align-items: center;
 }
 
-.button {
-    font-family: 'Boogaloo', cursive;
-    color: white;
-    font-size: 25px;
-    padding: 2vh;
-    border-radius: 2rem;
-    background-color: #0D5D56;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 3vh;
-}
-
 .message {
     color: red;
 }
@@ -205,12 +227,11 @@ input {
     padding: 1rem 2rem;
     border-radius: 2rem;
     border: none;
-    margin-bottom: 2rem;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
 h1 {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-family: 'Fredoka One', cursive;
     color: #000000;
 }

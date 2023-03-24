@@ -32,8 +32,10 @@ TRUNCATE quizzes;
 [x] - Show the username of the person that made a public quiz  
 [x] - style the login modal  
 [x] - style register page  
-[] - Check if there are components where needed  
 [x] - filteren and pagination op GET  
+[] - Make component of question block (play  & participate)  
+[] - finish socker implement  
+[] - Check if there are components where needed  
 [] - alwaysreturn error msg  
 [] - add some information on the homepage of the website   
 [] - update audience and issuer to work on remote  

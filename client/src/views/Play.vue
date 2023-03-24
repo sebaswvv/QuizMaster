@@ -6,8 +6,18 @@ import { useLoginStore } from '../stores/useLogin';
 import { onMounted } from 'vue';
 import Question from '../components/Question.vue';
 import { io } from "socket.io-client";
-const socket = io("http://localhost:3000");
+const socket = io("http://192.168.146.219:3000");
 const loginStore = useLoginStore();
+
+interface Player {
+    username: string;
+    score: number;
+}
+
+interface TempAnswer {
+    username: string;
+    answer: string;
+}
 
 const { id } = router.currentRoute.value.params;
 
@@ -18,26 +28,39 @@ const ended = ref(false);
 const currentQuestion = ref(<any>null);
 const round = ref(0);
 const roomId = ref('');
-const players = ref(<any>[]);
+const players = ref<Player[]>([]);
+const tempAnswers = ref<TempAnswer[]>([]);
 
 
 function timeIsUp(answer: string) {
+    // check foreach player if the answer is correct
+    players.value.forEach(player => {
+        // check player name in tempAnswers
+        const tempAnswer = tempAnswers.value.find(tempAnswer => tempAnswer.username === player.username);
+
+        if (tempAnswer) {
+            if (tempAnswer.answer === answer) {
+                player.score++;
+            }
+        }
+    });
+    tempAnswers.value = [];
     // to send the correct answer to the players
     socket.emit('newAnswer', { roomId: roomId.value, answer: answer });
 }
 
-
 function nextQuestion() {
-    //socket.emit('newAnswer', { roomId: roomId.value, answer: currentQuestion.value.correctAnswer });
-    // emit the next question
     // next round
     round.value++
     // if round is equal to the amount of questions, the game is finished
     if (round.value === questions.value.length) {
+        // sort the players by score, if draw, the first player to join is the winner
+        players.value.sort((a, b) => b.score - a.score);
+
         // game is finished
+        socket.emit('end', { roomId: roomId.value });
         started.value = false;
         round.value = 0;
-        console.log('finished');
         ended.value = true;
     } else {
         // load the next question
@@ -50,7 +73,6 @@ function startGame() {
     // notify the players that the game has started
     socket.emit('start', { roomId: roomId.value, quizName: quizName.value });
 
-
     // emit the question to the players
     currentQuestion.value = questions.value[round.value];
     socket.emit('newQuestion', { roomId: roomId.value, question: currentQuestion.value });
@@ -62,15 +84,7 @@ function startGame() {
 onMounted(async () => {
     // get the quiz with that id as query param and pass the bearer token from the login store if it exists
     try {
-        const response = await axios.get(`/api/quizzes/${id}`, {
-            headers: {
-                Authorization: `Bearer ${loginStore.token}`,
-            },
-        });
-        const quiz = response.data;
-        questions.value = quiz.questions;
-        quizName.value = quiz.name;
-
+        await getQuiz();
         generateRoomId();
         createRoom();
         listenToEmits();
@@ -85,11 +99,19 @@ onMounted(async () => {
 
 function listenToEmits() {
     socket.on("joined", (data: any) => {
-        players.value.push(data);
+        const player = {
+            username: data,
+            score: 0
+        }
+        players.value.push(player);
     });
 
     socket.on("answer", (data: any) => {
-        console.log(data);
+        const tempAnswer = {
+            username: data.username,
+            answer: data.answer
+        }
+        tempAnswers.value.push(tempAnswer);
     });
 }
 
@@ -113,19 +135,42 @@ function generateRoomId() {
     }
     roomId.value = randomNumbers.join('') + randomLetters.join('');
 }
+
+async function getQuiz() {
+    const response = await axios.get(`/api/quizzes/${id}`, {
+        headers: {
+            Authorization: `Bearer ${loginStore.token}`,
+        },
+    });
+    const quiz = response.data;
+    questions.value = quiz.questions;
+    quizName.value = quiz.name;
+}
 </script>
 
 <template>
+    <div class="center" v-if="ended">
+        <h2 class="text-center">Dat was hem, bedankt voor het spelen</h2>
+        <!-- show scores of each player -->
+        <h2 class="mt-3 text-center">De winnaar is: {{ players[0].username }}</h2>
+        <u class="list">
+            <li v-for="player in players" :key="player.username">{{ player.username }} heeft {{ player.score }} punten</li>
+        </u>
+        <!-- winner -->
+        <button class="button" @click="$router.push('/')">Terug naar home</button>
+    </div>
+
     <!-- starting.. -->
     <div class="center" v-if="!started && !ended">
-        <h1>Maak je klaar voor de:</h1>
         <h2 class="mb-5 text-center">{{ quizName }}</h2>
         <h3>Ga naar localhost/participate en voer deze code in om mee te doen:</h3>
         <h2>{{ roomId }}</h2>
         <h1>Deelnemers:</h1>
-        <u class="list">
-            <li v-for="player in players" :key="player">{{ player }}</li>
-        </u>
+        <div class="players">
+            <ul class="player-list">
+                <li v-for="player in players" :key="player.username">{{ player.username }}</li>
+            </ul>
+        </div>
         <button class="button" @click="startGame">SPEEL</button>
     </div>
     <!-- starting.. -->
@@ -134,14 +179,22 @@ function generateRoomId() {
         <Question v-if="started" :question="currentQuestion" :round="round" :key="round" @nextQuestion="nextQuestion"
             @timeIsUp="timeIsUp" />
     </div>
-
-    <div class="center" v-if="ended">
-        <h2 class="text-center">Dat was hem, bedankt voor het spelen</h2>
-        <button class="button" @click="$router.push('/')">Terug naar home</button>
-    </div>
 </template>
 
 <style scoped>
+.player-list li {
+    display: inline-block;
+    width: 18%;
+    margin-right: 10vh;
+    margin-bottom: 10px;
+    font-family: 'Boogaloo', cursive;
+    font-size: 5rem;
+}
+
+.player-list li:nth-child(5n) {
+    margin-right: 0;
+}
+
 .list {
     list-style-type: none;
     text-decoration: none;

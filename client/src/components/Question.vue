@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import TimerSlider from '../components/TimerSlider.vue';
 const { question, round } = defineProps(['question', 'round']);
 
-const emit = defineEmits(['timeIsUp']);
+const emit = defineEmits(['timeIsUp', 'nextQuestion']);
 
 // set time to answer in seconds
 const timeParts = question.timeToAnswer.split(':');

@@ -81,6 +81,10 @@ io.on('connection', (socket: Socket) => {
 
         // socket.to(room).emit('answer', answer);
     });
+
+    socket.on('end', ({roomId}) => {
+        socket.to(roomId).emit('end');
+    });
 });
   
 
