@@ -149,16 +149,16 @@ async function getQuiz() {
 </script>
 
 <template>
+    <!-- ended -->
     <div class="center" v-if="ended">
         <h2 class="text-center">Dat was hem, bedankt voor het spelen</h2>
-        <!-- show scores of each player -->
         <h2 class="mt-3 text-center">De winnaar is: {{ players[0].username }}</h2>
         <u class="list">
             <li v-for="player in players" :key="player.username">{{ player.username }} heeft {{ player.score }} punten</li>
         </u>
-        <!-- winner -->
         <button class="button" @click="$router.push('/')">Terug naar home</button>
     </div>
+    <!-- ended -->
 
     <!-- starting.. -->
     <div class="center" v-if="!started && !ended">
@@ -175,17 +175,19 @@ async function getQuiz() {
     </div>
     <!-- starting.. -->
 
+    <!-- game -->
     <div class="center">
         <Question v-if="started" :question="currentQuestion" :round="round" :key="round" @nextQuestion="nextQuestion"
             @timeIsUp="timeIsUp" />
     </div>
+    <!-- game -->
 </template>
 
 <style scoped>
 .player-list li {
     display: inline-block;
     width: 18%;
-    margin-right: 10vh;
+    margin-right: 15vh;
     margin-bottom: 10px;
     font-family: 'Boogaloo', cursive;
     font-size: 5rem;

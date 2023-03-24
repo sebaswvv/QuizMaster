@@ -28,8 +28,8 @@ function handleLogout() {
       <router-link to="/create">
         <button class="button mx-2">Maak je eigen quiz</button>
       </router-link>
-      <router-link to="/choose">
-        <button class="button mx-2">Speel een quiz</button>
+      <router-link to="/participate">
+        <button class="button mx-2">Doe mee aan een quiz</button>
       </router-link>
     </div>
   </div>

@@ -17,6 +17,7 @@ const questions: any = ref(null);
 const errorMessage = ref("");
 
 const modalIsOpen = ref(false);
+const published = ref(false);
 
 function handleSetPublic() {
   quizStore.togglePublic();
@@ -63,6 +64,7 @@ function publishQuiz() {
   });
 
   quizStore.publishQuiz();
+  published.value = true;
 }
 
 function addQuestion() {
@@ -116,6 +118,9 @@ onMounted(() => {
 </script>
 
 <template>
+  <div v-if="published" class="alert">
+    <h2 class="text-center">Je quiz is opgeslagen! Bekijk hem in je <router-link to="/account">account</router-link></h2>
+  </div>
   <div class="container-fluid">
     <HomeIcon />
     <AccountIcon />
@@ -163,6 +168,18 @@ onMounted(() => {
 
   
 <style scoped>
+.alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #c5e1a5;
+  font-size: 24px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
 #private-text {
   margin-bottom: 5px;
 }

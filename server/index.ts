@@ -39,21 +39,26 @@ const io = require('socket.io')(server, {
 // handle socket connections
 io.on('connection', (socket: Socket) => {
     socket.on('join', ({roomId, username}) => { 
+        // log all roomIds
         // if username is not equal to master, check if the room exists
         // if (username !== 'master') {
-        //     console.log(io.sockets.adapter.rooms.get(roomId));
-        //     if (!io.sockets.adapter.rooms.get(roomId)) {
-        //         socket.emit('error', 'Room does not exist');
-        //         return;
-        //     }
-        //     // check if the username is already taken
-        //     console.log(io.sockets.adapter.rooms.get(roomId));
-        //     if (io.sockets.adapter.rooms.get(roomId).has(username)) {
-        //         socket.emit('error', 'Username is already taken');
-        //         return;
-        //     }            
-        // }
-        socket.join(roomId);
+            //     console.log(io.sockets.adapter.rooms.get(roomId));
+            //     if (!io.sockets.adapter.rooms.get(roomId)) {
+                //         socket.emit('error', 'Room does not exist');
+                //         return;
+                //     }
+                //     // check if the username is already taken
+                //     console.log(io.sockets.adapter.rooms.get(roomId));
+                //     if (io.sockets.adapter.rooms.get(roomId).has(username)) {
+                    //         socket.emit('error', 'Username is already taken');
+                    //         return;
+                    //     }            
+                    // }
+                    socket.join(roomId);
+                    console.log(io.sockets.adapter.rooms.get(roomId));
+                    // get all usernames in the room
+                    const users = Array.from(io.sockets.adapter.rooms.get(roomId));
+                    console.log(users);
         socket.to(roomId).emit('joined', username);
     });
 
