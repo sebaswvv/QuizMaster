@@ -14,7 +14,6 @@ exports.register = async (req: Request, res: Response) => {
     }
 
     const userService = new UserService();
-    // TODO check if username already exists
     const usernameExists = await userService.checkUserNameExists(username);
     if (usernameExists) {
         res.status(400).json({ message: "Username already exists" });
@@ -31,7 +30,6 @@ exports.register = async (req: Request, res: Response) => {
 }
 
 exports.login = async (req: Request, res: Response) => {
-    // read username and password from request body
     const { username, password } = req.body;
 
     // check if the username and password are set
