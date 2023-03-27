@@ -5,6 +5,7 @@ import { useQuizStore } from '../stores/useQuiz';
 import HomeIcon from '../components/HomeIcon.vue';
 import router from '../router';
 import axios from 'axios';
+import DeletQuizModal from '../components/DeletQuizModal.vue';
 
 interface quiz {
     id: number;
@@ -20,6 +21,7 @@ const quizStore = useQuizStore();
 const userName = ref(loginStore.getUsername);
 
 const quizzes = ref<quiz[]>([]);
+const deleteModalIsOpen = ref(false);
 
 onMounted(async () => {
     if (!loginStore.isLoggedIn) {
@@ -47,14 +49,15 @@ function handleEditEvent(quizId: number) {
 }
 
 async function handleQuizDelete(quizId: number) {
-    const respone = await axios.delete(`/api/quizzes/${quizId}`, {
-        headers: {
-            Authorization: `Bearer ${loginStore.getToken}`,
-        },
-    });
+    deleteModalIsOpen.value = true;
+    // const respone = await axios.delete(`/api/quizzes/${quizId}`, {
+    //     headers: {
+    //         Authorization: `Bearer ${loginStore.getToken}`,
+    //     },
+    // });
 
-    // remove the quiz from the quizzes array
-    quizzes.value = quizzes.value.filter((quiz) => quiz.id !== quizId);
+    // // remove the quiz from the quizzes array
+    // quizzes.value = quizzes.value.filter((quiz) => quiz.id !== quizId);
 }
 </script>
 
@@ -109,6 +112,7 @@ async function handleQuizDelete(quizId: number) {
             </div>
         </div>
     </div>
+    <DeletQuizModal v-if="deleteModalIsOpen" />
 </template>
 
 <style scoped>

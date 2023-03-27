@@ -20,7 +20,13 @@ async function register() {
             username: userName.value,
             password: password.value,
         });
-        errorMessage.value = "Registratie gelukt, u kunt nu inloggen";
+
+
+        if (response.status === 201) {
+            errorMessage.value = "Registratie gelukt, u kunt nu inloggen";
+        } else {
+            errorMessage.value = "Er is iets misgegaan, probeer het later opnieuw";
+        }
     } catch (error: any) {
         if (error.response.status === 409) {
             errorMessage.value = "Gebruikersnaam of email bestaat al";

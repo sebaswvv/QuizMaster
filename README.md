@@ -15,3 +15,7 @@ To start this application run:
   
 \QuizMaster\server: npm run dev  
 \QuizMaster\client: npm run dev  
+
+
+## TODO:
+[] - implement delete confirm modal  

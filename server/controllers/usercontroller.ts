@@ -16,7 +16,7 @@ exports.register = async (req: Request, res: Response) => {
     const userService = new UserService();
     const usernameExists = await userService.checkUserNameExists(username);
     if (usernameExists) {
-        res.status(400).json({ message: "Username already exists" });
+        res.status(409).json({ message: "Username already exists" });
         return;
     }
 
