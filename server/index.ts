@@ -38,6 +38,7 @@ const io = require('socket.io')(server, {
 
 // handle socket connections
 io.on('connection', (socket: Socket) => {
+    // join/create a room
     socket.on('join', ({roomId, username}) => { 
         //if username is not equal to master, check if the room exists
         if (username !== 'master') {
@@ -51,10 +52,6 @@ io.on('connection', (socket: Socket) => {
         socket.join(roomId);
         socket.to(roomId).emit('joined', username);
     });
-
-    // socket.on('disconnect', () => {
-    //     console.log('user disconnected');
-    // });
 
     // master sends game start to all clients
     socket.on('start', ({roomId, quizName}) => {
