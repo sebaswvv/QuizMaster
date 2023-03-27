@@ -9,7 +9,6 @@ class UserService {
     }
 
     async getUserByUsername(username: string) {
-        // TODO make user object
         return this.userRepository.getUserByUsername(username);
     }
 
@@ -18,18 +17,9 @@ class UserService {
     }
 
     async registerUser(username: string, password: string, email: string) {
-        // encrypt password
-        const encryptedPassword = this.encryptPassword(password);
+        const encryptedPassword = bcrypt.hashSync(password, process.env.SALT);
         return this.userRepository.registerUser(username, encryptedPassword, email);
     }
-
-    encryptPassword(password: string) {
-        const salt = process.env.SALT;
-        const hash = bcrypt.hashSync(password, salt);
-        return hash;
-    }
-
-
 }
 
 export { UserService };

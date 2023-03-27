@@ -1,6 +1,3 @@
-<template>
-    <div class="slider" ref="slider"></div>
-</template>
 
 <script setup lang="ts">
 import { ref, onMounted, watch, nextTick, defineEmits } from "vue";
@@ -34,7 +31,9 @@ onMounted(async () => {
 
 });
 
-watch(timeInSeconds, (newValue: any) => {
+const timeInSecondsRef = ref(timeInSeconds);
+
+watch(timeInSecondsRef, (newValue: any) => {
     clearInterval(timerId!);
     slider.value!.style.width = '0px';
     elapsedTime = 0;
@@ -51,6 +50,10 @@ watch(timeInSeconds, (newValue: any) => {
     }, 10);
 });
 </script>
+
+<template>
+    <div class="slider" ref="slider"></div>
+</template>
 
 <style scoped>
 .slider {

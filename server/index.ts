@@ -37,32 +37,46 @@ const io = require('socket.io')(server, {
 });
 
 // handle socket connections
-// io.on('connection', (socket: Socket) => {
-//     // master creates roomId client side and joins the room. other clients follow and join the room
-//     socket.on('join', (data) => {
-//         const [room, userName] = data.split(',');
-//         socket.join(room);
-//         socket.to(room).emit('joined', userName);
-//     })
+io.on('connection', (socket: Socket) => {
+    // join/create a room
+    socket.on('join', ({roomId, username}) => { 
+        //if username is not equal to master, check if the room exists
+        if (username !== 'master') {
+            const room = io.sockets.adapter.rooms.get(roomId);
+            if (room === undefined) {
+                socket.emit('error', 'Room does not exist');
+                return;
+            }
+        }
+                
+        socket.join(roomId);
+        socket.to(roomId).emit('joined', username);
+    });
 
-//     // master sends game start to all clients
-//     socket.on('game-start', (data: any) => {
-//         const [room] = data.split(',');
-//         socket.to(room).emit('game-start', 'Game has started');
-//     });
+    // master sends game start to all clients
+    socket.on('start', ({roomId, quizName}) => {
+        socket.to(roomId).emit('started', quizName);
+    });
 
-//     // master sends question to all clients
-//     socket.on('question', (data: any) => {
-//         const [room, question] = data.split(',');
-//         socket.to(room).emit('question', question);
-//     });
+    // master sends question to all clients
+    socket.on('newQuestion', ({roomId, question}) => {
+        socket.to(roomId).emit('newQuestion', question);
+    });
 
-//     // master sends answer to all clients
-//     socket.on('answer', (data: any) => {
-//         const [room, answer] = data.split(',');
-//         socket.to(room).emit('answer', answer);
-//     });
-// });
+    // client sends answer to master
+    socket.on('newAnswer', ({roomId, answer}) => {
+        socket.to(roomId).emit('newAnswer', answer);
+    });
+
+    // master sends answer to all clients
+    socket.on('answer', ({roomId, username, answer}) => {
+        socket.to(roomId).emit('answer', {username, answer});
+    });
+
+    socket.on('end', ({roomId}) => {
+        socket.to(roomId).emit('end');
+    });
+});
   
 
 // start server

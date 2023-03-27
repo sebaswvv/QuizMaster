@@ -7,7 +7,7 @@ interface Quiz {
     name: string;
     userId: number;
     public: boolean;
-    questions: Array<any>; // define the type of the questions array
+    questions: Array<any>;
 }
 
 export const useQuizStore = defineStore({

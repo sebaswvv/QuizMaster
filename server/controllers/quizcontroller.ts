@@ -70,8 +70,7 @@ exports.searchQuizzes = async (req: Request, res: Response) => {
     }
     // send the req.body back
     res.status(200).json(quizzes);
-    return;
-    
+    return;    
 }
 
 exports.deleteQuiz = async (req: Request, res: Response) => {
@@ -94,7 +93,6 @@ exports.deleteQuiz = async (req: Request, res: Response) => {
         return;
     }
 
-    
     const deletedQuiz = await quizService.deleteQuiz(req.params.id);
     if (!deletedQuiz) {
         res.status(400).json({ message: 'Error deleting quiz' });
@@ -162,7 +160,6 @@ exports.getQuiz = async (req: Request, res: Response) => {
 
     // if the quiz is not public, check if the user is the owner of the quiz
     if (!quiz.public) {
-        // verify token
         const userId = verifyOwnerOfQuiz(req);
         // check if the user is the owner of the quiz
         if (userId !== quiz.userId) {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Navbar from "../components/Navbar.vue";
 import { ref } from "vue";
 import axios from "axios";
 

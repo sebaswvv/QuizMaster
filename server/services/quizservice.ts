@@ -11,11 +11,9 @@ class QuizService {
         this.quizRepository = new QuizRepository();
     }
 
-
     async searchQuizzes(search: any, limit: any, offset: any) {
         try {
-            const quizzes = await this.quizRepository.searchQuizzes(search, limit, offset);
-            return quizzes;
+            return await this.quizRepository.searchQuizzes(search, limit, offset);
         } catch (error) {
             return false;
         }
@@ -87,6 +85,7 @@ class QuizService {
         } else if (image.startsWith('data:image/png;base64,')) {
             base64Data = image.replace(/^data:image\/png;base64,/, '');
         } else {
+            return image;
         }
         const buffer = Buffer.from(base64Data, 'base64');
         const compressedImageBuffer = await sharp(buffer)
@@ -98,8 +97,7 @@ class QuizService {
         const base64EncodedImage = `data:${mimeType};base64,${compressedImageBuffer.toString('base64')}`;
     
         return base64EncodedImage;
-    }
-        
+    }        
 
     async deleteQuiz(id: any) {
         try {
@@ -109,7 +107,6 @@ class QuizService {
             return false;
         }
     }
-
 
     async addQuiz(rawQuiz: any) {
         // check if all required fields are present

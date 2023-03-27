@@ -1,3 +1,28 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useLoginStore } from '../stores/useLogin';
+import router from '../router';
+import LoginModal from './LoginModal.vue';
+
+const loginStore = useLoginStore();
+const modalIsOpen = ref(false);
+
+function openAccountPage() {
+    if (loginStore.isLoggedIn) {
+        router.push('/account');
+        return;
+    }
+    // open login modal	
+    modalIsOpen.value = true;
+}
+
+// click outside modal to close
+window.addEventListener('click', (e: MouseEvent) => {
+    if (e.target === document.querySelector('.modal')) {
+        modalIsOpen.value = false;
+    }
+});
+</script>
 <template>
     <a @click="openAccountPage" href="#">
         <div class="top-right">
@@ -28,31 +53,6 @@
     <LoginModal v-if="modalIsOpen" @close="modalIsOpen = false" />
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import { useLoginStore } from '../stores/useLogin';
-import router from '../router';
-import LoginModal from './LoginModal.vue';
-
-const loginStore = useLoginStore();
-const modalIsOpen = ref(false);
-
-function openAccountPage() {
-    if (loginStore.isLoggedIn) {
-        router.push('/account');
-        return;
-    }
-    // open login modal	
-    modalIsOpen.value = true;
-}
-
-// click outside modal to close
-window.addEventListener('click', (e: MouseEvent) => {
-    if (e.target === document.querySelector('.modal')) {
-        modalIsOpen.value = false;
-    }
-});
-</script>
 
 <style scoped>
 .top-right {
