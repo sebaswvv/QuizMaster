@@ -151,16 +151,17 @@ onMounted(() => {
       <NewQuestionBox :question="question" @error="handleError" @remove-question="removeQuestion" />
     </div>
 
+    <p class="fault">{{ errorMessage }}</p>
+
     <!-- button to add new question -->
-    <button v-if="quizStore.quiz.name != ''" class="button" @click="addQuestion">
+    <button v-if="quizStore.quiz.name != '' && !published" class="button" @click="addQuestion">
       Voeg een vraag toe
     </button>
 
-    <button v-if="quizStore.quiz.questions.length > 0" class="button mb-3" @click="publishQuiz">
+    <button v-if="quizStore.quiz.questions.length > 0 && !published" class="button mb-3" @click="publishQuiz">
       Publiceer Quiz
     </button>
 
-    <p class="fault">{{ errorMessage }}</p>
   </div>
   <LoginModal v-if="modalIsOpen" @close="modalIsOpen = false" />
 </template>

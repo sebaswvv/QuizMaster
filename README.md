@@ -33,13 +33,11 @@ TRUNCATE quizzes;
 [x] - style the login modal  
 [x] - style register page  
 [x] - filteren and pagination op GET  
-[] - Make component of question block (play  & participate)  
-[] - finish socker implement  
-[] - Check if there are components where needed  
+[x] - Make component of question block (play  & participate)  
+[x] - finish socker implement  
+[x] - Check if there are components where needed  
 [] - alwaysreturn error msg  
 [] - add some information on the homepage of the website   
 [] - update audience and issuer to work on remote  
 [] - make sure the user gets correct erros    
-
-[] - implement socket.io to play a quiz  
  

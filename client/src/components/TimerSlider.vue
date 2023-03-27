@@ -1,6 +1,3 @@
-<template>
-    <div class="slider" ref="slider"></div>
-</template>
 
 <script setup lang="ts">
 import { ref, onMounted, watch, nextTick, defineEmits } from "vue";
@@ -53,6 +50,10 @@ watch(timeInSecondsRef, (newValue: any) => {
     }, 10);
 });
 </script>
+
+<template>
+    <div class="slider" ref="slider"></div>
+</template>
 
 <style scoped>
 .slider {

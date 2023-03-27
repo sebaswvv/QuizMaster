@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { io } from "socket.io-client";
-const socket = io('http://192.168.146.219:3000');
+import { onMounted, ref, inject } from 'vue';
+const socket: any = inject('socket')
 
 const roomId = ref('');
 const username = ref('');
@@ -54,17 +53,17 @@ function handleAnswered(option: any) {
 }
 
 function listinToEmits() {
-    socket.on('error', data => {
+    socket.on('error', (data: string) => {
         message.value = data;
         joined.value = false;
     });
 
-    socket.on('started', data => {
+    socket.on('started', (data: string) => {
         started.value = true;
         quizName.value = data;
     });
 
-    socket.on('newQuestion', data => {
+    socket.on('newQuestion', (data: any) => {
         // to handle new round
         roundIsUp.value = false;
         correct.value = false;
@@ -73,7 +72,7 @@ function listinToEmits() {
         question.value = data;
     });
 
-    socket.on('newAnswer', data => {
+    socket.on('newAnswer', (data: string) => {
         correctAnswer.value = data;
         roundIsUp.value = true;
 
@@ -86,7 +85,7 @@ function listinToEmits() {
         }
     });
 
-    socket.on('end', data => {
+    socket.on('end', (data: any) => {
         // to handle end of game
         started.value = false;
         joined.value = false;

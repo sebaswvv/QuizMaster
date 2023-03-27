@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import router from '../router';
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, onMounted, inject } from 'vue';
 import { useLoginStore } from '../stores/useLogin';
-import { onMounted } from 'vue';
 import Question from '../components/Question.vue';
-import { io } from "socket.io-client";
-const socket = io("http://192.168.146.219:3000");
+const socket: any = inject('socket')
 const loginStore = useLoginStore();
 
 interface Player {
@@ -116,7 +114,7 @@ function listenToEmits() {
 }
 
 function createRoom() {
-    // creae object with room id and username master
+    // room id to upper
     const data = {
         roomId: roomId.value,
         username: "master"
@@ -127,12 +125,17 @@ function createRoom() {
 function generateRoomId() {
     const randomNumbers = [];
     const randomLetters = [];
+
+    // generate 4 random numbers
     for (let i = 0; i < 4; i++) {
         randomNumbers.push(Math.floor(Math.random() * 10));
     }
+
+    // generate 2 random letters
     for (let i = 0; i < 2; i++) {
         randomLetters.push(String.fromCharCode(Math.floor(Math.random() * 26) + 65));
     }
+
     roomId.value = randomNumbers.join('') + randomLetters.join('');
 }
 
@@ -163,7 +166,7 @@ async function getQuiz() {
     <!-- starting.. -->
     <div class="center" v-if="!started && !ended">
         <h2 class="mb-5 text-center">{{ quizName }}</h2>
-        <h3>Ga naar localhost/participate en voer deze code in om mee te doen:</h3>
+        <h3>Ga naar /participate en voer deze code in om mee te doen:</h3>
         <h2>{{ roomId }}</h2>
         <h1>Deelnemers:</h1>
         <div class="players">

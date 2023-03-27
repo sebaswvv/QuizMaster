@@ -39,7 +39,6 @@ const io = require('socket.io')(server, {
 // handle socket connections
 io.on('connection', (socket: Socket) => {
     socket.on('join', ({roomId, username}) => { 
-        // log all roomIds
         //if username is not equal to master, check if the room exists
         if (username !== 'master') {
             const room = io.sockets.adapter.rooms.get(roomId);
@@ -67,6 +66,7 @@ io.on('connection', (socket: Socket) => {
         socket.to(roomId).emit('newQuestion', question);
     });
 
+    // client sends answer to master
     socket.on('newAnswer', ({roomId, answer}) => {
         socket.to(roomId).emit('newAnswer', answer);
     });

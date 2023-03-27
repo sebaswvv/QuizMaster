@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Navbar from "../components/Navbar.vue";
-import axios from "axios";
 import { ref } from "vue";
 import { useLoginStore } from "../stores/useLogin";
 import { useQuizStore } from "../stores/useQuiz";
@@ -59,8 +58,8 @@ async function login() {
                 </div>
                 <div class="form-group d-md-flex">
                   <!-- <div class="w-50 text-md-right">
-                                                                                <a href="#">Forgot Password</a>
-                                                                              </div> -->
+                                                                                  <a href="#">Forgot Password</a>
+                                                                                </div> -->
                 </div>
               </form>
               <p class="text-center">
