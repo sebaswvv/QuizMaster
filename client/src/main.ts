@@ -7,7 +7,7 @@ import router from './router'
 import io from 'socket.io-client';
 
 axios.defaults.baseURL = 'http://localhost:3000';
-const socket = io("http://145.81.198.188:3000");
+const socket = io("http://localhost:3000");
 
 const app = createApp(App)
 app.provide('socket', socket)

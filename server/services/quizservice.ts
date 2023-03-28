@@ -94,9 +94,7 @@ class QuizService {
             .toBuffer();
     
         const mimeType = 'image/jpeg';
-        const base64EncodedImage = `data:${mimeType};base64,${compressedImageBuffer.toString('base64')}`;
-    
-        return base64EncodedImage;
+        return `data:${mimeType};base64,${compressedImageBuffer.toString('base64')}`;    
     }        
 
     async deleteQuiz(id: any) {
