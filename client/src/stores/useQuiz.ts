@@ -63,13 +63,17 @@ export const useQuizStore = defineStore({
             };
 
             // send the quiz to the backend
-            const response = await axios.post(
-                '/api/quizzes',
-                quizAsJson,
-                config
-            )
+            try {
+                await axios.post(
+                    '/api/quizzes',
+                    quizAsJson,
+                    config
+                )
+                return true;
+            } catch (error) {
+                return false;
+            }            
         },
-
         resetQuiz() {
             this.quiz = {
                 id: 0,

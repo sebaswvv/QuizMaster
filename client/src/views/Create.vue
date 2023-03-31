@@ -63,7 +63,10 @@ function publishQuiz() {
     }
   });
 
-  quizStore.publishQuiz();
+  if (!quizStore.publishQuiz()) {
+    errorMessage.value = "Er is iets misgegaan, probeer het later opnieuw";
+    return;
+  }
   published.value = true;
 }
 
