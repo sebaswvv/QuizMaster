@@ -14,8 +14,3 @@ To start this application run:
 \QuizMaster\database: docker compose up  
 \QuizMaster\server: npm run dev  
 \QuizMaster\client: npm run dev  
-
-
-## TODO:
-[] - alle axios op de juiste plek (store) en foutmeldingen opvangen  
-[] - Code nalopen  
