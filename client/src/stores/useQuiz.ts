@@ -58,9 +58,8 @@ export const useQuizStore = defineStore({
             const quizAsJson = JSON.parse(JSON.stringify(this.quiz));
 
             // get Bearer token from login store and add it to the header
-            const token = useLoginStore().getToken;
             const config = {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: { Authorization: `Bearer ${useLoginStore().getToken}` }
             };
 
             // send the quiz to the backend

@@ -1,10 +1,10 @@
 <template>
     <div id="modal">
         <div class="modal-content">
-            <h2>Are you sure you want to delete that quiz?</h2>
+            <h2>Weet je zeker dat je die quiz wilt verwijderen?</h2>
             <div class="modal-buttons">
-                <button @click="$emit('confirm')" id="yes-button">Yes</button>
-                <button @click="$emit('closeDeleteModal')" id="no-button">No</button>
+                <button @click="$emit('confirm')" id="yes-button">Ja</button>
+                <button @click="$emit('closeDeleteModal')" id="no-button">Nee</button>
             </div>
         </div>
     </div>
@@ -32,6 +32,7 @@
     padding: 20px;
     border-radius: 5px;
     text-align: center;
+    width: 40%;
 }
 
 .modal-buttons {

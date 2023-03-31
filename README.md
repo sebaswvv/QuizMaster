@@ -12,10 +12,10 @@ JWT_KEY="" (Secret key to generate JWT tokens)
 
 To start this application run:  
 \QuizMaster\database: docker compose up  
-
 \QuizMaster\server: npm run dev  
 \QuizMaster\client: npm run dev  
 
 
 ## TODO:
-[] - implement delete confirm modal  
+[] - alle axios op de juiste plek (store) en foutmeldingen opvangen  
+[] - Code nalopen  

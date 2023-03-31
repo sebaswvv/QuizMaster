@@ -22,6 +22,7 @@ const userName = ref(loginStore.getUsername);
 
 const quizzes = ref<quiz[]>([]);
 const deleteModalIsOpen = ref(false);
+const quizToBeDeleted = ref();
 
 onMounted(async () => {
     if (!loginStore.isLoggedIn) {
@@ -48,16 +49,26 @@ function handleEditEvent(quizId: number) {
     router.push(`/edit/${quizId}`);
 }
 
-async function handleQuizDelete(quizId: number) {
+async function handleOpenConfirmDeleteModal(quizId: number) {
     deleteModalIsOpen.value = true;
-    // const respone = await axios.delete(`/api/quizzes/${quizId}`, {
-    //     headers: {
-    //         Authorization: `Bearer ${loginStore.getToken}`,
-    //     },
-    // });
+    quizToBeDeleted.value = quizId;
+}
 
-    // // remove the quiz from the quizzes array
-    // quizzes.value = quizzes.value.filter((quiz) => quiz.id !== quizId);
+async function handleDeleteQuiz() {
+    const respone = await axios.delete(`/api/quizzes/${quizToBeDeleted.value}`, {
+        headers: {
+            Authorization: `Bearer ${loginStore.getToken}`,
+        },
+    });
+
+    // remove the quiz from the quizzes array
+    quizzes.value = quizzes.value.filter((quiz) => quiz.id !== quizToBeDeleted.value);    
+    deleteModalIsOpen.value = false;
+}
+
+function handleCloseDeleteModal() {
+    deleteModalIsOpen.value = false;
+    quizToBeDeleted.value = null;
 }
 </script>
 
@@ -92,7 +103,7 @@ async function handleQuizDelete(quizId: number) {
                     </a>
 
                     <!-- delete button -->
-                    <a @click="handleQuizDelete(quiz.id)">
+                    <a @click="handleOpenConfirmDeleteModal(quiz.id)">
                         <svg width="45px" height="45px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -112,7 +123,7 @@ async function handleQuizDelete(quizId: number) {
             </div>
         </div>
     </div>
-    <DeletQuizModal v-if="deleteModalIsOpen" />
+    <DeletQuizModal @confirm="handleDeleteQuiz()" @closeDeleteModal="handleCloseDeleteModal()" v-if="deleteModalIsOpen" />
 </template>
 
 <style scoped>
