@@ -30,9 +30,5 @@ router
     .post(QuizController.addQuiz)
     .put(QuizController.editQuiz)
     .delete(QuizController.deleteQuiz);    
-
-
-
-
     
 module.exports = router;

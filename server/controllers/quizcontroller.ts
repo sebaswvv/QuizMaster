@@ -37,7 +37,7 @@ exports.editQuiz = async (req: Request, res: Response) => {
     }
     //verify that there is a quiz with the id from the param and that the user is the owner
     if (quizFromDb.userId !== userId) {
-        res.status(401).json({ message: 'Unautherized' });
+        res.status(401).json({ message: 'Unauthorized' });
         return;
     }
     const updatedQuiz = await quizService.editQuiz(req.body, quizId);
@@ -89,7 +89,7 @@ exports.deleteQuiz = async (req: Request, res: Response) => {
     }
     //verify that there is a quiz with the id from the param and that the user is the owner
     if (quizFromDb.userId !== userId) {
-        res.status(401).json({ message: 'Unautherized' });
+        res.status(401).json({ message: 'Unauthorized' });
         return;
     }
 

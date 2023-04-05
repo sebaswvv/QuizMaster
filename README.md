@@ -14,3 +14,8 @@ To start this application run:
 \QuizMaster\database: docker compose up  
 \QuizMaster\server: npm run dev  
 \QuizMaster\client: npm run dev  
+
+## TODO:
+[] - Search no quizzes found toevoegen  
+[] - Pagination get all quizes for user  
+[] - htmlspecialchars in express??  

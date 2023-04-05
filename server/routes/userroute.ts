@@ -10,6 +10,4 @@ router
     .route('/register')
     .post(UserController.register);
 
-
-
 module.exports = router;
