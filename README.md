@@ -22,6 +22,6 @@ To start this application run:
 \QuizMaster\client: npm install  
 \QuizMaster\client: npm run dev  
 
-Login credentails website:  
+Login credentails user accounts:  
 username: sebas  
 password: admin  
