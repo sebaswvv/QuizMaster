@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Mar 31, 2023 at 09:20 AM
+-- Generation Time: Apr 05, 2023 at 03:03 PM
 -- Server version: 10.9.3-MariaDB-1:10.9.3+maria~ubu2204
 -- PHP Version: 8.0.25
 
@@ -39,10 +39,6 @@ CREATE TABLE `options` (
 --
 
 INSERT INTO `options` (`id`, `text`, `questionId`, `isCorrect`) VALUES
-(225, 'a', 58, b'0'),
-(226, 'b', 58, b'1'),
-(227, 'c', 58, b'0'),
-(228, 'd', 58, b'0'),
 (229, 'asd', 59, b'0'),
 (230, 'asd', 59, b'1'),
 (231, 'as', 59, b'0'),
@@ -562,7 +558,15 @@ INSERT INTO `options` (`id`, `text`, `questionId`, `isCorrect`) VALUES
 (745, 'asd', 188, b'0'),
 (746, 'a', 188, b'0'),
 (747, 'asdasd', 188, b'0'),
-(748, 'sdasd', 188, b'1');
+(748, 'sdasd', 188, b'1'),
+(749, 'a', 189, b'0'),
+(750, 'b', 189, b'1'),
+(751, 'c', 189, b'0'),
+(752, 'd', 189, b'0'),
+(753, 'a', 190, b'0'),
+(754, 'b', 190, b'1'),
+(755, 'c', 190, b'0'),
+(756, 'd', 190, b'0');
 
 -- --------------------------------------------------------
 
@@ -675,19 +679,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `options`
 --
 ALTER TABLE `options`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=749;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=757;
 
 --
 -- AUTO_INCREMENT for table `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=189;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
 
 --
 -- AUTO_INCREMENT for table `quizzes`
 --
 ALTER TABLE `quizzes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `users`

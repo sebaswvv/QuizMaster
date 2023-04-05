@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import http from 'http';
 import { Socket } from 'socket.io';
 const cors = require('cors');
+import {encode} from 'html-entities';
 
 const QuizRouter = require('./routes/quizroute');
 const UserRouter = require('./routes/userroute');
@@ -15,6 +16,19 @@ const port = 3000;
 
 // set max limit to 1.1mb
 app.use(bodyParser.json({ limit: '2mb' }));
+
+// middleware to sanitize user input
+app.use((req, res, next) => {
+    if (req.body) {
+        for (const [key, value] of Object.entries(req.body)) {
+          if (typeof value === 'string') {
+            req.body[key] = value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          }
+        }
+      }
+      next();
+});
+
 
 // use JSON
 app.use(express.json());

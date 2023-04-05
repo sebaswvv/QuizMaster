@@ -110,6 +110,7 @@ class QuizRepository extends Repository {
         
             // get quizId
             const quizId = await this.knex('quizzes').max('id as id').first();
+            quiz.id = quizId.id;
             
             // loop through questions and insert each question and options
             for (const question of quiz.questions) {
